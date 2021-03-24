@@ -55,7 +55,7 @@ describe('lazyProperty', () => {
 
   it('refresh', async () => {
     const dispose = autorun(() => {
-      console.log(user.value)
+      console.log(user.value.name)
     })
     await user.ready
     expect(user.value).toEqual({ name: 'abc' })
@@ -168,6 +168,7 @@ describe('lazyProperty', () => {
     try {
       lazy.cancel()
       await lazy.requestResult
+      // eslint-disable-next-line no-empty
     } catch {}
     await sleep(30)
     expect(lazy.value).toBe('')

@@ -74,6 +74,15 @@ module.exports = {
     // ],
     '@typescript-eslint/no-explicit-any': 0,
   },
+  overrides: [
+    {
+      files: ['*.test.ts', '*.test.tsx'],
+      rules: {
+        'no-console': 0,
+        'no-empty': 0,
+      },
+    },
+  ],
   settings: {
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.d.ts'],

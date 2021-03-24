@@ -40,14 +40,15 @@ export function mobxRequest<TData, TRequest extends (param?: any) => Promise<any
       }
     }),
   })
-  let prevRequest: CancellablePromise<TData> | null = null
+  // 上一次的请求结果Promise
+  let lastRequest: CancellablePromise<TData> | null = null
   const rawRequest = target.request
   target.request = (...args: Parameters<TRequest>) => {
-    if (prevRequest && target.loading) {
-      prevRequest.cancel()
+    if (lastRequest && target.loading) {
+      lastRequest.cancel()
     }
-    prevRequest = rawRequest(...args)
-    return prevRequest
+    lastRequest = rawRequest(...args)
+    return lastRequest
   }
   makeObservable(target, {
     loading: observable,

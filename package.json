@@ -1,13 +1,22 @@
 {
   "name": "mobx-value",
   "version": "0.1.0",
-  "main": "index.js",
   "license": "MIT",
   "author": "superwf@gmail.com",
   "repository": {
     "type": "git",
     "url": "http://github.com/superwf/mobx-value"
   },
+  "files": [
+    "module",
+    "lib"
+  ],
+  "scripts": {
+    "test": "jest",
+    "prepublishOnly": "tsc -p tsconfig.lib.json && tsc -p tsconfig.module.json"
+  },
+  "main": "lib/index.js",
+  "types": "module/index.d.ts",
   "devDependencies": {
     "@testing-library/react": "^11.2.5",
     "@types/jest": "^26.0.20",

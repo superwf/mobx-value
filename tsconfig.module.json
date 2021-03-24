@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "module",
+    "module": "esnext",
+    "declaration": true
+  },
+  "exclude": ["src"],
+  "files": ["src/index.ts"]
+}
