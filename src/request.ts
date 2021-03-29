@@ -21,11 +21,11 @@ export interface MobxRequestValue<Data, Request extends RequestFunction> extends
 export function mobxRequest<TData, TRequest extends (param?: any) => Promise<any>>({
   value: defaultValue,
   request: requestFunction,
-  recursive,
+  annotation,
 }: MobxRequestOption<TData, TRequest>): MobxRequestValue<TData, TRequest> {
   const setter = mobxSetter({
     value: defaultValue,
-    recursive,
+    annotation,
   })
   const target: MobxRequestValue<TData, TRequest> = Object.assign(setter, {
     loading: false,

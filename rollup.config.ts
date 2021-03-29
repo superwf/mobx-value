@@ -16,7 +16,7 @@ const option: RollupOptions = {
       format: 'iife',
       preferConst: true,
       sourcemap: true,
-      globals: { name: 'window' },
+      globals: { mobx: 'mobx', lodash: '_' },
       name: 'MobxValue',
     },
   ],

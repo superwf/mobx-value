@@ -1,11 +1,17 @@
-# Mobx variable object factory
+# Mobx 便捷工具库
 
-## Till Now there are for basic object
+参考 `mobx-utils`，但由于其不能满足很多应用场景，实现了一套自用工具集。
 
-* setter
+## 共四个工具
 
-* boolean, based on setter
+### setter
 
-* request, based on setter
+* 参数
 
-* lazy, based on request
+* api
+
+### boolean, based on setter
+
+### request, based on setter
+
+### lazy, based on request

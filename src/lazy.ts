@@ -1,10 +1,12 @@
-import { noop } from 'lodash'
 import { onBecomeObserved } from 'mobx'
 import type { CancellablePromise } from 'mobx/dist/api/flow'
 
 import type { MobxRequestOption, MobxRequestValue } from './request'
 import { mobxRequest } from './request'
 import type { RequestFunction } from './type'
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {}
 
 export type MobxLazyOption<D, R extends RequestFunction> = MobxRequestOption<D, R>
 
@@ -23,11 +25,11 @@ export interface MobxLazyValue<Data, Request extends RequestFunction> extends Mo
 export function mobxLazy<Data, Request extends RequestFunction>({
   request,
   value: initValue,
-  recursive,
+  annotation,
 }: MobxLazyOption<Data, Request>): MobxLazyValue<Data, Request> {
   const requestObject = mobxRequest({
     value: initValue,
-    recursive,
+    annotation,
     request,
   })
   let resolve: (v: Data) => void

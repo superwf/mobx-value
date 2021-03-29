@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { autorun, runInAction, isObservable } from 'mobx'
+import { autorun, isObservable, observable, runInAction } from 'mobx'
 
 import { mobxSetter } from './setter'
 
@@ -31,7 +31,7 @@ describe('setter', () => {
     expect(b.value).toBe(3)
   })
 
-  it('object value, default: recursive false', () => {
+  it('object value, default decorator is observer', () => {
     const b = mobxSetter({
       value: [
         0,
@@ -39,43 +39,6 @@ describe('setter', () => {
           name: 'x',
         },
       ] as [number, { name: string }],
-    })
-    const spy = jest.fn()
-    expect(b.value).toEqual([
-      0,
-      {
-        name: 'x',
-      },
-    ])
-    expect(isObservable(b.value[1])).toBe(false)
-    const dispose = autorun(() => {
-      if (b.value[1].name !== 'x') {
-        spy()
-      }
-    })
-    expect(spy).not.toHaveBeenCalled()
-    runInAction(() => {
-      b.value[1].name = 'newName'
-    })
-    expect(b.value).toEqual([
-      0,
-      {
-        name: 'newName',
-      },
-    ])
-    expect(spy).not.toHaveBeenCalled()
-    dispose()
-  })
-
-  it('object value, default: recursive true', () => {
-    const b = mobxSetter({
-      value: [
-        0,
-        {
-          name: 'x',
-        },
-      ] as [number, { name: string }],
-      recursive: true,
     })
     const spy = jest.fn()
     expect(b.value).toEqual([
@@ -101,6 +64,43 @@ describe('setter', () => {
       },
     ])
     expect(spy).toHaveBeenCalled()
+    dispose()
+  })
+
+  it('object value, decorator shallow', () => {
+    const b = mobxSetter({
+      value: [
+        0,
+        {
+          name: 'x',
+        },
+      ] as [number, { name: string }],
+      annotation: observable.shallow,
+    })
+    const spy = jest.fn()
+    expect(b.value).toEqual([
+      0,
+      {
+        name: 'x',
+      },
+    ])
+    expect(isObservable(b.value[1])).toBe(false)
+    const dispose = autorun(() => {
+      if (b.value[1].name !== 'x') {
+        spy()
+      }
+    })
+    expect(spy).not.toHaveBeenCalled()
+    runInAction(() => {
+      b.value[1].name = 'newName'
+    })
+    expect(b.value).toEqual([
+      0,
+      {
+        name: 'newName',
+      },
+    ])
+    expect(spy).not.toHaveBeenCalled()
     dispose()
   })
 })

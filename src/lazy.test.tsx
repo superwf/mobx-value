@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { noop } from 'lodash'
-import { autorun, isObservable } from 'mobx'
+import { autorun, isObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
 
@@ -134,20 +134,20 @@ describe('lazyProperty', () => {
     dispose()
   })
 
-  describe('测试recursive参数', () => {
-    it('默认user recursive 为false', () => {
+  describe('测试annotation为shallow', () => {
+    it('指定shallow', () => {
       const notRecursiveUser = mobxLazy({
         value: { box: [1, 2, 3] },
         request: () => Promise.resolve({ box: [4, 5, 6] }),
+        annotation: observable.shallow,
       })
       expect(isObservable(notRecursiveUser.value.box)).toBe(false)
     })
 
-    it('recursive 为 true', () => {
+    it('默认不指定为observable', () => {
       const notRecursiveUser = mobxLazy({
         value: { box: [1, 2, 3] },
         request: () => Promise.resolve({ box: [4, 5, 6] }),
-        recursive: true,
       })
       expect(isObservable(notRecursiveUser.value.box)).toBe(true)
     })

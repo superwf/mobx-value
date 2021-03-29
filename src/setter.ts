@@ -1,10 +1,8 @@
-import type { IObservableFactory } from 'mobx'
+import type { AnnotationMapEntry } from 'mobx'
 import { action, makeObservable, observable } from 'mobx'
 
-import { isPrimitive } from './isPrimitive'
-
 export interface MobxSetterOption<Data> {
-  recursive?: boolean
+  annotation?: Exclude<AnnotationMapEntry, false>
   value: Data
 }
 
@@ -14,7 +12,7 @@ export interface MobxSetterValue<Data> {
   restore: () => void
 }
 
-export function mobxSetter<Data>({ value, recursive }: MobxSetterOption<Data>): MobxSetterValue<Data> {
+export function mobxSetter<Data>({ value, annotation }: MobxSetterOption<Data>): MobxSetterValue<Data> {
   const defaultValue = value
   const target = {
     value,
@@ -25,10 +23,8 @@ export function mobxSetter<Data>({ value, recursive }: MobxSetterOption<Data>): 
       target.value = v
     },
   }
-  const decorator: IObservableFactory | typeof observable.shallow =
-    isPrimitive(value) || recursive ? observable : observable.shallow
   makeObservable(target, {
-    value: decorator,
+    value: annotation || observable,
     restore: action,
     set: action,
   })

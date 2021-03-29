@@ -1,8 +1,9 @@
 import { noop } from 'lodash'
-import { isObservable } from 'mobx'
+import { isObservable, observable } from 'mobx'
 
-import { mobxRequest } from './request'
 import { sleep } from './sleep'
+
+import { mobxRequest } from '.'
 
 describe('requestProperty', () => {
   function mockFetch(param?: {
@@ -73,7 +74,7 @@ describe('requestProperty', () => {
     expect(user.loading).toBe(false)
   })
 
-  it('recursive', () => {
+  it('默认annotation为observable', () => {
     const mock = jest.fn(() =>
       Promise.resolve({
         name: '',
@@ -81,9 +82,9 @@ describe('requestProperty', () => {
       }),
     )
     const user = mobxRequest({ value: { name: '', box: [] }, request: mock })
-    const user1 = mobxRequest({ value: { name: '', box: [] }, request: mock, recursive: true })
-    expect(isObservable(user.value.box)).toBe(false)
-    expect(isObservable(user1.value.box)).toBe(true)
+    const user1 = mobxRequest({ value: { name: '', box: [] }, request: mock, annotation: observable.shallow })
+    expect(isObservable(user.value.box)).toBe(true)
+    expect(isObservable(user1.value.box)).toBe(false)
   })
 
   it('catch error', async () => {
