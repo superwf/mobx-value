@@ -2,8 +2,8 @@ import type { AnnotationMapEntry } from 'mobx'
 import { action, makeObservable, observable } from 'mobx'
 
 export interface MobxSetterOption<Data> {
-  annotation?: Exclude<AnnotationMapEntry, false>
   value: Data
+  annotation?: Exclude<AnnotationMapEntry, false>
 }
 
 export interface MobxSetterValue<Data> {

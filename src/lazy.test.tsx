@@ -8,7 +8,7 @@ import { mobxLazy } from './lazy'
 import { sleep } from './sleep'
 
 describe('lazyProperty', () => {
-  function mockRequest() {
+  function mockRequest(): Promise<{ name: string }> {
     return Promise.resolve({
       name: 'abc',
     })
@@ -153,30 +153,30 @@ describe('lazyProperty', () => {
     })
   })
 
-  it('测试cancel', async () => {
+  it('cancel', async () => {
     async function mockRequestLazy() {
       await sleep(20)
       return 'ok'
     }
     const lazy = mobxLazy({ value: '', request: mockRequestLazy })
+    expect(lazy.loading).toBe(false)
+    autorun(() => console.log(lazy.value))
+    expect(lazy.loading).toBe(true)
     expect(lazy.value).toBe('')
     let isReady = false
-    ;(async () => {
-      await lazy.ready
-      isReady = true
-    })()
-    try {
-      lazy.cancel()
-      await lazy.requestResult
-      // eslint-disable-next-line no-empty
-    } catch {}
+    lazy.ready
+      .then(() => {
+        isReady = true
+      })
+      .catch(noop)
+    lazy.cancel()
     await sleep(30)
     expect(lazy.value).toBe('')
     expect(isReady).toBe(false)
   })
 
-  describe('react组件中的表现', () => {
-    it('挂载组件', async () => {
+  describe('work in react', () => {
+    it('mount component', async () => {
       const Comp: FC = observer(() => {
         if (user.value.name) {
           return <b>has a name</b>

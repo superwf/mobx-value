@@ -11,14 +11,16 @@ const config: Configuration = {
   output: {
     filename: 'index.js',
     library: {
-      type: 'window',
-      name: 'MobxValue',
+      type: 'var',
+      name: 'mobxValue',
       export: 'default',
     },
     globalObject: 'window',
     publicPath: '/',
   },
-  externals: ['mobx'],
+  externals: {
+    mobx: 'window.mobx',
+  },
   resolve: {
     extensions: ['.ts', '.tsx'],
   },

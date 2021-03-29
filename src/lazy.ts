@@ -12,10 +12,9 @@ export type MobxLazyOption<D, R extends RequestFunction> = MobxRequestOption<D, 
 
 export interface MobxLazyValue<Data, Request extends RequestFunction> extends MobxRequestValue<Data, Request> {
   requested: boolean
-  requestResult: CancellablePromise<Data>
   cancel(): void
   ready: Promise<Data>
-  refresh(...p: any[]): void
+  refresh(): void
   reset(): void
 }
 
@@ -39,35 +38,32 @@ export function mobxLazy<Data, Request extends RequestFunction>({
       resolve = reso
       reject = reje
     })
-  const result: MobxLazyValue<Data, Request> = Object.assign(requestObject, {
+
+  let requestResult = { cancel: noop } as CancellablePromise<Data>
+  const target: MobxLazyValue<Data, Request> = Object.assign(requestObject, {
     requested: false,
     ready: createNewPromise(),
-    requestResult: { cancel: noop } as CancellablePromise<Data>,
-    cancel: () => {
-      if (result.loading && result.requestResult?.cancel) {
-        result.requestResult.cancel()
-      }
-    },
     refresh: () => {
-      result.requestResult = requestObject.request.apply(null)
-      result.ready = createNewPromise()
-      result.requestResult.then(resolve).catch(reject)
+      target.requested = true
+      requestResult = requestObject.request.apply(null)
+      target.ready = createNewPromise()
+      requestResult.then(resolve).catch(reject)
     },
     /** 抛弃当前运行结果并重置所有属性为初始状态 */
     reset: () => {
-      result.cancel()
-      result.requested = false
+      target.cancel()
+      target.requested = false
       requestObject.restore()
-      result.ready = createNewPromise()
+      target.ready = createNewPromise()
     },
   })
 
   onBecomeObserved(requestObject, 'value', () => {
-    if (!result.requested && !result.loading) {
-      result.requested = true
-      result.requestResult = requestObject.request.apply(null)
-      result.requestResult.then(resolve).catch(reject)
+    if (!target.requested && !target.loading) {
+      target.requested = true
+      requestResult = requestObject.request.apply(null)
+      requestResult.then(resolve).catch(reject)
     }
   })
-  return result
+  return target
 }

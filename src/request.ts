@@ -11,6 +11,7 @@ export interface MobxRequestOption<Data, Request extends RequestFunction> extend
 
 export interface MobxRequestValue<Data, Request extends RequestFunction> extends MobxSetterValue<Data> {
   request: (...args: Parameters<Request>) => CancellablePromise<Data>
+  cancel(): void
   loading: boolean
 }
 
@@ -27,6 +28,8 @@ export function mobxRequest<TData, TRequest extends (param?: any) => Promise<any
     value: defaultValue,
     annotation,
   })
+  // 上一次的请求结果Promise
+  let lastRequest: CancellablePromise<TData> | null = null
   const target: MobxRequestValue<TData, TRequest> = Object.assign(setter, {
     loading: false,
     request: flow(function* request(...args: Parameters<TRequest>) {
@@ -39,9 +42,12 @@ export function mobxRequest<TData, TRequest extends (param?: any) => Promise<any
         target.loading = false
       }
     }),
+    cancel: () => {
+      if (target.loading && lastRequest?.cancel) {
+        lastRequest.cancel()
+      }
+    },
   })
-  // 上一次的请求结果Promise
-  let lastRequest: CancellablePromise<TData> | null = null
   const rawRequest = target.request
   target.request = (...args: Parameters<TRequest>) => {
     if (lastRequest && target.loading) {

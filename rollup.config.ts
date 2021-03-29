@@ -17,7 +17,7 @@ const option: RollupOptions = {
       preferConst: true,
       sourcemap: true,
       globals: { mobx: 'mobx', lodash: '_' },
-      name: 'MobxValue',
+      name: 'mobxValue',
     },
   ],
   external: ['lodash', 'mobx'],

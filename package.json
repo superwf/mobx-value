@@ -19,6 +19,7 @@
   },
   "main": "lib/index.js",
   "types": "module/index.d.ts",
+  "typings": "module/index.d.ts",
   "module": "module/index.js",
   "unpkg": "dist/index.js",
   "devDependencies": {

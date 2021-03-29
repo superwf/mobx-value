@@ -96,6 +96,18 @@ describe('requestProperty', () => {
     })
   })
 
+  it('cancel current request', done => {
+    const mock = jest.fn(() => Promise.resolve('abc'))
+    const name = mobxRequest({ value: '', request: mock })
+    name.request().catch(noop)
+    expect(name.value).toBe('')
+    name.cancel()
+    setTimeout(() => {
+      expect(name.value).toBe('')
+      done()
+    })
+  })
+
   it('when request many times, each request will auto cancel prev one', done => {
     let i = 0
     const mock = jest.fn(async () => {
