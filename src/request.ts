@@ -7,6 +7,10 @@ import type { RequestFunction } from './type'
 
 export interface MobxRequestOption<Data, Request extends RequestFunction> extends MobxSetterOption<Data> {
   request: Request
+  /**
+   * 是否可以同时发起请求
+   * @default false
+   * */
   parallel?: boolean
 }
 

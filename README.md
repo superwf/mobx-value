@@ -1,10 +1,12 @@
 # Mobx eazy usage encapsulation
 
-Inspired by `mobx-utils`，but `mobx-utils` can not work with my project case properly, then `mobx-value` born.
+模仿 `mobx-utils` 的基于`mobx`的工具方法集，由于 `mobx-utils` 经常不能满足我的项目需求，因此便有了 `mobx-value`。
 
-Based on Mobx 6.
+基于 Mobx 6.
 
-## Four mobx value type
+## 共四个生成方法
+
+由这四种方法生成的变量，都应用在由`mobx-react`的`observer`方法生成的组件中，以实现自动响应式更新。
 
 ### setter
 
@@ -41,7 +43,7 @@ interface MobxSetterValue<Data> {
 }
 ```
 
-### boolean, based on setter
+### boolean, 基于 setter
 
 * Example
 
@@ -69,7 +71,7 @@ interface MobxBooleanValue {
 }
 ```
 
-### request, based on setter
+### request, 基于 setter
 
 * Example
 
@@ -102,6 +104,7 @@ interface MobxRequestOption<Data> {
     | observable.struct | observable.deep
     | observable.ref | true
   request: (args?: any) => Promise<Data>
+  parallel?: boolean
 }
 ```
 
@@ -110,23 +113,29 @@ interface MobxRequestOption<Data> {
 ```typescript
 interface MobxRequestValue<Data, Request extends (args?: any) => Promise<Data>> {
   value: Data
+  // 除了等待请求完成后填充value数据，也可使用set直接设置value
   set: (v: Data) => void
   restore: () => void
   request: (...args: Parameters<Request>) => CancellablePromise<Data>
+  // 如果当前在请求中，则取消请求
   cancel: () => void
   loading: boolean
+  /** 基于最后一次请求的参数，重新请求 */
+  refresh: () => CancellablePromise<Data>
 }
 ```
 
-### lazy, based on request
+### lazy, 基于 request
 
 * Example
 
 ```typescript
 const user = mobxLazy({ value: { name: '' }, request: () => Promise.resolve({ name: 'abc' })})
 
-// run twice, first time is '', second time is 'abc'
-// Note!!!, must in observer context
+// 在autorun中的代码将运行两次
+// 一次由请求触发，另一次由restore触发
+// 注意，发起lazy请求必须在observer的上下文环境中，例如autorun，reaction或mobx-react的observer包裹的组件
+// 直接使用是不会引起lazy请求的
 autorun(() => {
   console.log(user.value.name)
 })
@@ -136,7 +145,7 @@ user.restore()
 user.value.name // ''
 ```
 
-* Parameters type `MobxLazyOption`, same with `MobxRequestOption`
+* Parameters type `MobxLazyOption`, 与 `MobxRequestOption` 相同
 
 ```typescript
 interface MobxLazyOption<Data> {
@@ -145,6 +154,7 @@ interface MobxLazyOption<Data> {
     | observable.struct | observable.deep
     | observable.ref | true
   request: (args?: any) => Promise<Data>
+  parallel?: boolean
 }
 ```
 
@@ -154,14 +164,21 @@ interface MobxLazyOption<Data> {
 interface MobxLazyValue<Data, Request extends RequestFunction> {
   value: Data
   set: (v: Data) => void
+  // restore仅将value数据恢复到初始状态
   restore: () => void
   request: (...args: Parameters<Request>) => CancellablePromise<Data>
   cancel: () => void
   loading: boolean
+  /** 记录是否被请求过 */
   requested: boolean
   cancel(): void
   ready: Promise<Data>
   refresh(): void
+  /**
+   * 执行restore，并重置为未请求状态
+   * 如果重新进入observer环境则会再次发起request
+   * 抛弃当前运行结果并重置所有属性为初始状态
+   */
   reset(): void
 }
 ```

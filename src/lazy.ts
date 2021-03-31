@@ -14,7 +14,11 @@ export interface MobxLazyValue<Data, Request extends RequestFunction> extends Mo
   requested: boolean
   cancel(): void
   ready: Promise<Data>
-  // refresh(): void
+  /**
+   * 执行restore，并重置为未请求状态
+   * 如果重新进入observer环境则会再次发起request
+   * 抛弃当前运行结果并重置所有属性为初始状态
+   */
   reset(): void
 }
 

@@ -15,7 +15,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.module.json && NODE_ENV=production webpack",
-    "prepublishOnly": "yarn build && standard-version",
+    "prepublishOnly": "yarn test && yarn build && standard-version",
     "prepare": "husky install"
   },
   "main": "lib/index.js",
