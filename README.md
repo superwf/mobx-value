@@ -86,6 +86,11 @@ user.value.name // ''
 
 user.request()
 user.cancel() // cancel last request
+
+/** only request once */
+user.request() // auto debounce
+user.request() // when last request not complete
+user.request() // new request will be debounced
 ```
 
 * Parameters type `MobxRequestOption`
