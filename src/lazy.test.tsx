@@ -4,20 +4,26 @@ import { autorun, isObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
 
-import { mobxLazy } from './lazy'
 import { sleep } from './sleep'
 
+import { mobxLazy } from '.'
+
 describe('lazyProperty', () => {
-  function mockRequest(): Promise<{ name: string }> {
-    return Promise.resolve({
+  let mockRequest = jest.fn(() =>
+    Promise.resolve({
       name: 'abc',
-    })
-  }
+    }),
+  )
 
-  const user = mobxLazy({ value: { name: '' }, request: mockRequest })
+  let user = mobxLazy({ value: { name: '' }, request: mockRequest })
 
-  afterEach(() => {
-    user.reset()
+  beforeEach(() => {
+    mockRequest = jest.fn(() =>
+      Promise.resolve({
+        name: 'abc',
+      }),
+    )
+    user = mobxLazy({ value: { name: '' }, request: mockRequest })
   })
 
   it('test lazy init value', () => {
@@ -53,9 +59,29 @@ describe('lazyProperty', () => {
     expect(user.value).toEqual({ name: '' })
   })
 
+  it('reset', async () => {
+    expect(user.loading).toBe(false)
+    const dispose = autorun(() => {
+      if (user.requested && !user.loading) {
+        expect(user.value).toEqual({ name: 'abc' })
+      } else {
+        expect(user.value).toEqual({ name: '' })
+      }
+    })
+    expect(user.loading).toBe(true)
+    await user.ready
+    expect(user.loading).toBe(false)
+    expect(user.value).toEqual({ name: 'abc' })
+    dispose()
+    user.reset()
+    expect(user.loading).toBe(false)
+    expect(user.requested).toBe(false)
+    expect(user.value).toEqual({ name: '' })
+  })
+
   it('refresh', async () => {
     const dispose = autorun(() => {
-      console.log(user.value.name)
+      noop(user.value.name)
     })
     await user.ready
     expect(user.value).toEqual({ name: 'abc' })
@@ -65,6 +91,19 @@ describe('lazyProperty', () => {
     await user.ready
     expect(user.value).toEqual({ name: 'abc' })
     expect(user.loading).toBe(false)
+    dispose()
+  })
+
+  it('如果已经在请求状态，由于默认防抖，只请求一次', async () => {
+    user.refresh()
+    const dispose = autorun(() => {
+      noop(user.value.name)
+    })
+    expect(mockRequest).toHaveBeenCalledTimes(1)
+    user.refresh()
+    expect(mockRequest).toHaveBeenCalledTimes(1)
+    await user.ready
+    expect(mockRequest).toHaveBeenCalledTimes(1)
     dispose()
   })
 
@@ -108,7 +147,7 @@ describe('lazyProperty', () => {
     })
   })
 
-  it('refresh连续执行，后面的refresh先执行完，前面的refresh后执行，确保最后调用的refresh的值是最终值', async () => {
+  it('refresh连续执行，后面的refresh会被防抖忽略', async () => {
     let firstInvoke = true
     async function mockRequestLazy() {
       let resolveValue = 'first'
@@ -125,12 +164,12 @@ describe('lazyProperty', () => {
 
     const callTime = mobxLazy({ value: '', request: mockRequestLazy })
     const dispose = autorun(() => {
-      console.log(callTime.value)
+      noop(callTime.value)
     })
     callTime.ready.catch(noop)
     callTime.refresh()
     await sleep(20)
-    expect(callTime.value).toBe('second')
+    expect(callTime.value).toBe('first')
     dispose()
   })
 
@@ -159,8 +198,9 @@ describe('lazyProperty', () => {
       return 'ok'
     }
     const lazy = mobxLazy({ value: '', request: mockRequestLazy })
+    lazy.cancel()
     expect(lazy.loading).toBe(false)
-    autorun(() => console.log(lazy.value))
+    autorun(() => noop(lazy.value))
     expect(lazy.loading).toBe(true)
     expect(lazy.value).toBe('')
     let isReady = false

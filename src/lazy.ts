@@ -14,7 +14,7 @@ export interface MobxLazyValue<Data, Request extends RequestFunction> extends Mo
   requested: boolean
   cancel(): void
   ready: Promise<Data>
-  refresh(): void
+  // refresh(): void
   reset(): void
 }
 
@@ -26,7 +26,7 @@ export function mobxLazy<Data, Request extends RequestFunction>({
   value: initValue,
   annotation,
 }: MobxLazyOption<Data, Request>): MobxLazyValue<Data, Request> {
-  const requestObject = mobxRequest({
+  const requestTarget = mobxRequest({
     value: initValue,
     annotation,
     request,
@@ -40,28 +40,29 @@ export function mobxLazy<Data, Request extends RequestFunction>({
     })
 
   let requestResult = { cancel: noop } as CancellablePromise<Data>
-  const target: MobxLazyValue<Data, Request> = Object.assign(requestObject, {
+  const target: MobxLazyValue<Data, Request> = Object.assign(requestTarget, {
     requested: false,
     ready: createNewPromise(),
     refresh: () => {
       target.requested = true
-      requestResult = requestObject.request.apply(null)
+      requestResult = requestTarget.request.apply(null)
       target.ready = createNewPromise()
       requestResult.then(resolve).catch(reject)
+      return requestResult
     },
     /** 抛弃当前运行结果并重置所有属性为初始状态 */
     reset: () => {
       target.cancel()
       target.requested = false
-      requestObject.restore()
+      requestTarget.restore()
       target.ready = createNewPromise()
     },
   })
 
-  onBecomeObserved(requestObject, 'value', () => {
+  onBecomeObserved(requestTarget, 'value', () => {
     if (!target.requested && !target.loading) {
       target.requested = true
-      requestResult = requestObject.request.apply(null)
+      requestResult = requestTarget.request.apply(null)
       requestResult.then(resolve).catch(reject)
     }
   })

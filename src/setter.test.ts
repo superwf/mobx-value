@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { autorun, isObservable, observable, runInAction } from 'mobx'
 
-import { mobxSetter } from './setter'
+import { mobxSetter } from '.'
 
 describe('setter', () => {
   const n = mobxSetter({ value: 1 })

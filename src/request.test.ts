@@ -6,17 +6,23 @@ import { sleep } from './sleep'
 import { mobxRequest } from '.'
 
 describe('requestProperty', () => {
-  function mockFetch(param?: {
-    path: { id: number }
-    body: {
-      name: string
-    }
-  }) {
-    const name = param?.body?.name
-    return Promise.resolve({
-      name: name?.repeat(2),
-    })
-  }
+  const mockFetch = jest.fn(
+    (param?: {
+      path: { id: number }
+      body: {
+        name: string
+      }
+    }) => {
+      const name = param?.body?.name
+      return Promise.resolve({
+        name: name?.repeat(2),
+      })
+    },
+  )
+
+  afterEach(() => {
+    mockFetch.mockClear()
+  })
 
   it('test setter', () => {
     const user = mobxRequest({ value: { name: '' }, request: mockFetch })
@@ -34,7 +40,7 @@ describe('requestProperty', () => {
     expect(user1.loading).toBe(false)
   })
 
-  it('fetch', done => {
+  it('request data', done => {
     const user = mobxRequest({ value: { name: '' }, request: mockFetch })
     user
       .request({
@@ -54,6 +60,15 @@ describe('requestProperty', () => {
         done()
       })
     expect(user.loading).toBe(true)
+  })
+
+  it('refresh', () => {
+    const user = mobxRequest({ value: { name: '' }, request: mockFetch })
+    expect(mockFetch).toHaveBeenCalledTimes(0)
+    const req = user.refresh()
+    req.catch(noop)
+    expect(mockFetch).toHaveBeenCalledTimes(1)
+    req.cancel()
   })
 
   it('fetch and restore at once', done => {
@@ -88,11 +103,13 @@ describe('requestProperty', () => {
   })
 
   it('catch error', async () => {
-    const mock = jest.fn(() => Promise.reject(new Error('request error')))
+    const e = new Error('request error')
+    const mock = jest.fn(() => Promise.reject(e))
     const user = mobxRequest({ value: { name: '' }, request: mock })
-    await user.request().catch(e => {
-      expect(e).toBeInstanceOf(Error)
-      expect(e.message).toBe('request error')
+    await user.request().catch(err => {
+      expect(err).toBeInstanceOf(Error)
+      expect(user.error).toBe(e)
+      expect(err.message).toBe(e.message)
     })
   })
 
@@ -108,7 +125,7 @@ describe('requestProperty', () => {
     })
   })
 
-  it('when request many times, each request will auto cancel prev one', done => {
+  it('more requests cancel', done => {
     let i = 0
     const mock = jest.fn(async () => {
       i += 1
@@ -129,5 +146,21 @@ describe('requestProperty', () => {
       expect(user.value).toBe(3)
       done()
     })
+  })
+
+  it('default no parallel', async () => {
+    const mock = jest.fn(() => Promise.resolve('abc'))
+    const name = mobxRequest({ value: '', request: mock })
+    await Promise.all([name.request(), name.request(), name.request()])
+    expect(name.value).toBe('abc')
+    expect(mock).toHaveBeenCalledTimes(1)
+  })
+
+  it('with parallel', async () => {
+    const mock = jest.fn(() => Promise.resolve('abc'))
+    const name = mobxRequest({ value: '', request: mock, parallel: true })
+    await Promise.all([name.request().catch(noop), name.request().catch(noop), name.request().catch(noop)])
+    expect(name.value).toBe('abc')
+    expect(mock).toHaveBeenCalledTimes(3)
   })
 })

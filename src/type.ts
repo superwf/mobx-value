@@ -1,1 +1,1 @@
-export type RequestFunction = (args?: any) => Promise<any>
+export type RequestFunction = (...args: any[]) => Promise<any>

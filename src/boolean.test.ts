@@ -1,6 +1,6 @@
 import { observe } from 'mobx'
 
-import { mobxBoolean } from './boolean'
+import { mobxBoolean } from '.'
 
 describe('mobxBoolean', () => {
   const a = mobxBoolean()
