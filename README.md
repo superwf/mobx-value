@@ -2,6 +2,8 @@
 
 模仿 `mobx-utils` 的基于`mobx`的工具方法集，由于 `mobx-utils` 经常不能满足我的项目需求，因此便有了 `mobx-value`。
 
+也有些 api 受 ahooks 影响，但没有做到那么多复杂的功能，按需添加吧，一下子塞太多实际上用不到的东西容易造成 bug 太多测试无法覆盖。
+
 基于 Mobx 6.
 
 ## 共四个生成方法
@@ -13,12 +15,12 @@
 * Example
 
 ```typescript
-const a = mobxSetter({ value: 1 })
-a.value // 1
-a.set(2)
-a.value // 2
-a.restore()
-a.value // 1
+const counter = mobxSetter({ value: 1 })
+counter.value // 1
+counter.set(2)
+counter.value // 2
+counter.restore()
+counter.value // 1
 ```
 
 * Parameters type `MobxSetterOption`
@@ -48,12 +50,12 @@ interface MobxSetterValue<Data> {
 * Example
 
 ```typescript
-const a = mobxBoolean()
-a.value // false
-a.setTrue() // true
-a.setFalse // false
-a.toggle() // true
-a.restore() // false
+const modal = mobxBoolean()
+modal.value // false
+modal.setTrue() // true
+modal.setFalse // false
+modal.toggle() // true
+modal.restore() // false
 ```
 
 * Parameters type `boolean`, optional, default `false`.

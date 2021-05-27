@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.module.json && NODE_ENV=production webpack",
+    "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.module.json && NODE_ENV=production webpack && NODE_ENV=production webpack -c webpack.config.independent.ts",
     "prepublishOnly": "yarn test && yarn build && standard-version",
     "prepare": "husky install"
   },
@@ -67,11 +67,11 @@
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
-    "mobx": "^6.1.8"
+    "mobx": ">=6.0.0"
   },
   "browserslist": {
     "production": [
-      "chrome > 70"
+      "chrome > 80"
     ]
   }
 }

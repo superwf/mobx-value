@@ -19,15 +19,15 @@ const config: Configuration = {
     publicPath: '/',
   },
   externals: {
-    mobx: 'window.mobx',
+    mobx: 'mobx',
   },
   resolve: {
-    extensions: ['.ts', '.tsx'],
+    extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.(js|ts|tsx)$/,
         include: [resolveRoot('src')],
         loader: 'babel-loader',
         options: {

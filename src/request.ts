@@ -60,9 +60,8 @@ export function mobxRequest<TData, Request extends RequestFunction>({
     }),
     refresh: () => target.request(...lastParameters),
     cancel: () => {
-      if (target.loading) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        lastRequest!.cancel()
+      if (target.loading && lastRequest) {
+        lastRequest.cancel()
       }
     },
   })
