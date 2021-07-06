@@ -11,16 +11,16 @@ const option: RollupOptions = {
   input: 'src/index.ts',
   output: [
     {
-      dir: 'browser',
+      dir: 'module',
       banner: '/* eslint-disable */',
-      format: 'iife',
+      format: 'module',
       preferConst: true,
       sourcemap: true,
-      globals: { mobx: 'mobx', lodash: '_' },
+      // globals: { mobx: 'mobx', lodash: '_' },
       name: 'mobxValue',
     },
   ],
-  external: ['lodash', 'mobx'],
+  // external: ['mobx'],
 
   plugins: [
     babel({

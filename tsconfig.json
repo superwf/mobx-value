@@ -14,8 +14,8 @@
     "moduleResolution": "node",
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "strictPropertyInitialization": false
   },
-  "include": ["src"]
+  "include": ["src", "webpack.config.demo.ts"]
 }

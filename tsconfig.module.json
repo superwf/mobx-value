@@ -5,8 +5,9 @@
     "noEmit": false,
     "outDir": "module",
     "module": "ESNext",
+    "emitDeclarationOnly": true,
     "declaration": true
   },
-  "exclude": ["src"],
+  "include": [],
   "files": ["src/index.ts", "src/independent.ts"]
 }

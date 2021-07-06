@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { mount } from 'enzyme'
 import { noop } from 'lodash'
 import { autorun, isObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -223,11 +223,11 @@ describe('lazyProperty', () => {
         }
         return <b>no name</b>
       })
-      const app = render(<Comp />)
-      expect(app.container.textContent).toBe('no name')
+      const app = mount(<Comp />)
+      expect(app.text()).toBe('no name')
       await user.ready
-      app.rerender(<Comp />)
-      expect(app.container.textContent).toBe('has a name')
+      app.update()
+      expect(app.text()).toBe('has a name')
       app.unmount()
     })
   })
