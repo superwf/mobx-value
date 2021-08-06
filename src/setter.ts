@@ -1,9 +1,20 @@
 import type { AnnotationMapEntry } from 'mobx'
-import { action, makeObservable, observable } from 'mobx'
+import { action, makeObservable, observable, onBecomeUnobserved } from 'mobx'
 
 export interface MobxSetterOption<Data> {
   value: Data
+  /**
+   * mobx `makeObservable` annotation option for `value`
+   * @default observable
+   * */
   annotation?: Exclude<AnnotationMapEntry, false>
+  /**
+   * auto run restore when not observed
+   * may be this option should be default true?
+   * when set default true will break main version
+   * @default false
+   * */
+  autoRestoreWhenNotObserved?: boolean
 }
 
 export interface MobxSetterValue<Data> {
@@ -12,7 +23,11 @@ export interface MobxSetterValue<Data> {
   restore: () => void
 }
 
-export function mobxSetter<Data>({ value, annotation }: MobxSetterOption<Data>): MobxSetterValue<Data> {
+export function mobxSetter<Data>({
+  value,
+  annotation = observable,
+  autoRestoreWhenNotObserved = false,
+}: MobxSetterOption<Data>): MobxSetterValue<Data> {
   const defaultValue = value
   const target = {
     value,
@@ -24,9 +39,12 @@ export function mobxSetter<Data>({ value, annotation }: MobxSetterOption<Data>):
     },
   }
   makeObservable(target, {
-    value: annotation || observable,
+    value: annotation,
     restore: action,
     set: action,
   })
+  if (autoRestoreWhenNotObserved) {
+    onBecomeUnobserved(target, 'value', target.restore)
+  }
   return target
 }

@@ -1,5 +1,5 @@
 import { noop } from 'lodash'
-import { isObservable, observable } from 'mobx'
+import { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved } from 'mobx'
 
 import { sleep } from './sleep'
 
@@ -162,5 +162,28 @@ describe('requestProperty', () => {
     await Promise.all([name.request().catch(noop), name.request().catch(noop), name.request().catch(noop)])
     expect(name.value).toBe('abc')
     expect(mock).toHaveBeenCalledTimes(3)
+  })
+
+  it('set auto restore when not observed', async () => {
+    const mock = jest.fn(() => Promise.resolve('a'))
+    const name = mobxRequest({ value: '', request: mock, parallel: true, autoRestoreWhenNotObserved: true })
+    const mockOnObserved = jest.fn()
+    const mockOnUnobserved = jest.fn()
+    const stop1 = onBecomeObserved(name, 'value', mockOnObserved)
+    expect(mockOnObserved).not.toHaveBeenCalled()
+    expect(name.value).toBe('')
+    await name.request()
+    const dispose1 = autorun(() => {
+      expect(name.value).toBe('a')
+    })
+    expect(mockOnObserved).toHaveBeenCalledTimes(1)
+    const stop2 = onBecomeUnobserved(name, 'value', mockOnUnobserved)
+    expect(mockOnUnobserved).not.toHaveBeenCalled()
+    dispose1()
+    expect(name.value).toBe('')
+    expect(mockOnUnobserved).toHaveBeenCalledTimes(1)
+
+    stop1()
+    stop2()
   })
 })

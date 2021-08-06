@@ -53,6 +53,7 @@ module.exports = {
         allowSeparatedGroups: false,
       },
     ],
+    'import/prefer-default-export': 0,
     'import/order': [
       'error',
       {

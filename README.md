@@ -32,6 +32,8 @@ interface MobxSetterOption<Data> {
   annotation?: observable | observable.shallow
     | observable.struct | observable.deep
     | observable.ref | true
+  // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
+  autoRestoreWhenNotObserved?: boolean
 }
 ```
 
@@ -58,7 +60,16 @@ modal.toggle() // true
 modal.restore() // false
 ```
 
-* Parameters type `boolean`, optional, default `false`.
+* Parameters type `MobxBooleanOption`
+
+```typescript
+interface MobxBooleanOption {
+  // 默认 false
+  value?: boolean,
+  // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
+  autoRestoreWhenNotObserved?: boolean
+}
+```
 
 * Return type `MobxBooleanValue`
 
@@ -106,7 +117,10 @@ interface MobxRequestOption<Data> {
     | observable.struct | observable.deep
     | observable.ref | true
   request: (args?: any) => Promise<Data>
+  // set to true, prevent next request when loading, default false
   parallel?: boolean
+  // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
+  autoRestoreWhenNotObserved?: boolean
 }
 ```
 
@@ -156,7 +170,10 @@ interface MobxLazyOption<Data> {
     | observable.struct | observable.deep
     | observable.ref | true
   request: (args?: any) => Promise<Data>
+  // set to true, prevent next request when loading, default false
   parallel?: boolean
+  // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
+  autoRestoreWhenNotObserved?: boolean
 }
 ```
 

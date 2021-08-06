@@ -6,6 +6,8 @@ describe('mobxBoolean', () => {
   const a = mobxBoolean()
   it('default false', () => {
     expect(a.value).toBe(false)
+    const b = mobxBoolean({ autoRestoreWhenNotObserved: true })
+    expect(b.value).toBe(false)
   })
 
   it('observe', () => {
