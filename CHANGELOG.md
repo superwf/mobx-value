@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/superwf/mobx-value/compare/v0.1.3...v0.2.1) (2021-08-06)
+
+
+### Features
+
+* add autoRestoreWhenNotObserved option ([ce90a9c](https://github.com/superwf/mobx-value/commit/ce90a9cd825f1585b92784f9e0428ce355eda469))
+* add autoRestoreWhenNotObserved option ([cd09b5d](https://github.com/superwf/mobx-value/commit/cd09b5d23503d1b5c1744e9122beebc072e51d76))
+
 ### [0.1.3](https://github.com/superwf/mobx-value/compare/v0.1.2...v0.1.3) (2021-07-06)
 
 ### [0.1.2](https://github.com/superwf/mobx-value/compare/v0.1.1...v0.1.2) (2021-07-06)
