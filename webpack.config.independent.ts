@@ -12,7 +12,7 @@ const config: Configuration = {
     main: resolveRoot('src/independent.ts'),
   },
   output: {
-    filename: 'independent.js',
+    filename: 'independent.umd.js',
     library: {
       type: 'var',
       name: 'mobxValue',

@@ -1,12 +1,10 @@
 import { onBecomeObserved } from 'mobx'
 import type { CancellablePromise } from 'mobx/dist/api/flow'
 
+import { noop } from './noop'
 import type { MobxRequestOption, MobxRequestValue } from './request'
 import { mobxRequest } from './request'
 import type { RequestFunction } from './type'
-
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = () => {}
 
 export type MobxLazyOption<D, R extends RequestFunction> = MobxRequestOption<D, R>
 
@@ -29,11 +27,13 @@ export function mobxLazy<Data, Request extends RequestFunction>({
   request,
   value: initValue,
   annotation,
+  autoRestoreWhenNotObserved,
 }: MobxLazyOption<Data, Request>): MobxLazyValue<Data, Request> {
   const requestTarget = mobxRequest({
     value: initValue,
     annotation,
     request,
+    autoRestoreWhenNotObserved,
   })
   let resolve: (v: Data) => void
   let reject: (e: Error) => void

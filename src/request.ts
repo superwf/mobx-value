@@ -8,7 +8,7 @@ import type { RequestFunction } from './type'
 export interface MobxRequestOption<Data, Request extends RequestFunction> extends MobxSetterOption<Data> {
   request: Request
   /**
-   * 是否可以同时发起请求
+   * set to true, prevent next request when loading
    * @default false
    * */
   parallel?: boolean
@@ -31,11 +31,13 @@ export function mobxRequest<TData, Request extends RequestFunction>({
   value: defaultValue,
   request: requestFunction,
   annotation,
+  autoRestoreWhenNotObserved = false,
   parallel,
 }: MobxRequestOption<TData, Request>): MobxRequestValue<TData, Request> {
   const setter = mobxSetter({
     value: defaultValue,
     annotation,
+    autoRestoreWhenNotObserved,
   })
   type TParameters = Parameters<Request>
 

@@ -1,9 +1,10 @@
-import { mount } from 'enzyme'
-import { noop } from 'lodash'
-import { autorun, isObservable, observable } from 'mobx'
+import { render } from '@testing-library/react'
+// import { mount } from 'enzyme'
+import { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
 
+import { noop } from './noop'
 import { sleep } from './sleep'
 
 import { mobxLazy } from '.'
@@ -216,19 +217,47 @@ describe('lazyProperty', () => {
   })
 
   describe('work in react', () => {
+    const user1 = mobxLazy({ value: { name: '' }, request: mockRequest, autoRestoreWhenNotObserved: true })
+
+    const Comp: FC = observer(() => {
+      if (user1.value.name) {
+        return <b id="content">has a name</b>
+      }
+      return <b id="content">no name</b>
+    })
     it('mount component', async () => {
-      const Comp: FC = observer(() => {
-        if (user.value.name) {
-          return <b>has a name</b>
-        }
-        return <b>no name</b>
-      })
-      const app = mount(<Comp />)
-      expect(app.text()).toBe('no name')
-      await user.ready
-      app.update()
-      expect(app.text()).toBe('has a name')
+      const app = render(<Comp />)
+      const node = await app.findByText('no name')
+      expect(node.textContent).toBe('has a name')
+      expect(user1.value.name).toBe('abc')
       app.unmount()
+      expect(user1.value.name).toBe('')
+      user1.reset()
+    })
+
+    it('set auto restore when not observed', async () => {
+      const mockOnObserved = jest.fn()
+      const mockOnUnobserved = jest.fn()
+      const stop1 = onBecomeObserved(user1, 'value', mockOnObserved)
+      const stop2 = onBecomeUnobserved(user1, 'value', mockOnUnobserved)
+
+      expect(mockOnObserved).not.toHaveBeenCalled()
+      expect(mockOnUnobserved).not.toHaveBeenCalled()
+
+      const app = render(<Comp />)
+      expect(user1.value.name).toBe('')
+      await app.findByText('no name')
+      // await user1.ready
+      expect(mockOnObserved).toHaveBeenCalledTimes(1)
+      expect(mockOnUnobserved).not.toHaveBeenCalled()
+      expect(user1.value.name).toBe('abc')
+
+      app.unmount()
+      expect(mockOnUnobserved).toHaveBeenCalledTimes(1)
+      expect(user1.value.name).toBe('')
+
+      stop1()
+      stop2()
     })
   })
 })

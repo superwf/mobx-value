@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { autorun, isObservable, observable, runInAction } from 'mobx'
+import { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved, runInAction } from 'mobx'
 
 import { mobxSetter } from '.'
 
@@ -102,5 +102,55 @@ describe('setter', () => {
     ])
     expect(spy).not.toHaveBeenCalled()
     dispose()
+  })
+
+  it('default, no auto restore when not observed', () => {
+    const a = mobxSetter({ value: 1 })
+    const mockOnObserved = jest.fn()
+    const mockOnUnobserved = jest.fn()
+    const stop1 = onBecomeObserved(a, 'value', mockOnObserved)
+    expect(mockOnObserved).not.toHaveBeenCalled()
+    const dispose1 = autorun(() => {
+      expect(a.value).toBe(1)
+      a.set(2)
+    })
+    const dispose2 = autorun(() => {
+      expect(a.value).toBe(2)
+    })
+    expect(mockOnObserved).toHaveBeenCalledTimes(1)
+    const stop2 = onBecomeUnobserved(a, 'value', mockOnUnobserved)
+    expect(mockOnUnobserved).not.toHaveBeenCalled()
+    dispose1()
+    dispose2()
+    expect(a.value).toBe(2)
+    expect(mockOnUnobserved).toHaveBeenCalledTimes(1)
+
+    stop1()
+    stop2()
+  })
+
+  it('set auto restore when not observed', () => {
+    const a = mobxSetter({ value: 1, autoRestoreWhenNotObserved: true })
+    const mockOnObserved = jest.fn()
+    const mockOnUnobserved = jest.fn()
+    const stop1 = onBecomeObserved(a, 'value', mockOnObserved)
+    expect(mockOnObserved).not.toHaveBeenCalled()
+    const dispose1 = autorun(() => {
+      expect(a.value).toBe(1)
+      a.set(2)
+    })
+    const dispose2 = autorun(() => {
+      expect(a.value).toBe(2)
+    })
+    expect(mockOnObserved).toHaveBeenCalledTimes(1)
+    const stop2 = onBecomeUnobserved(a, 'value', mockOnUnobserved)
+    expect(mockOnUnobserved).not.toHaveBeenCalled()
+    dispose1()
+    dispose2()
+    expect(a.value).toBe(1)
+    expect(mockOnUnobserved).toHaveBeenCalledTimes(1)
+
+    stop1()
+    stop2()
   })
 })
