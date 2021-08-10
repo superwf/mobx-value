@@ -1,4 +1,4 @@
-import { observe } from 'mobx'
+import { autorun, observe } from 'mobx'
 
 import { mobxBoolean } from '.'
 
@@ -47,6 +47,18 @@ describe('mobxBoolean', () => {
     const b = mobxBoolean()
     a.setTrue()
     expect(a.value).toBe(true)
+    expect(b.value).toBe(false)
+  })
+
+  it('set auto restore when not observed', () => {
+    const b = mobxBoolean({ autoRestoreWhenNotObserved: true })
+    expect(b.value).toBe(false)
+    b.setTrue()
+    expect(b.value).toBe(true)
+    const dispose = autorun(() => {
+      expect(b.value).toBe(true)
+    })
+    dispose()
     expect(b.value).toBe(false)
   })
 })
