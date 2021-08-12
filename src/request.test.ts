@@ -166,7 +166,7 @@ describe('requestProperty', () => {
 
   it('set auto restore when not observed', async () => {
     const mock = jest.fn(() => Promise.resolve('a'))
-    const name = mobxRequest({ value: '', request: mock, parallel: true, autoRestoreWhenNotObserved: true })
+    const name = mobxRequest({ value: '', request: mock, parallel: true, autoRestoreOnBecomeUnobserved: true })
     const mockOnObserved = jest.fn()
     const mockOnUnobserved = jest.fn()
     const stop1 = onBecomeObserved(name, 'value', mockOnObserved)

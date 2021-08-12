@@ -31,13 +31,13 @@ export function mobxRequest<TData, Request extends RequestFunction>({
   value: defaultValue,
   request: requestFunction,
   annotation,
-  autoRestoreWhenNotObserved = false,
+  autoRestoreOnBecomeUnobserved = false,
   parallel,
 }: MobxRequestOption<TData, Request>): MobxRequestValue<TData, Request> {
   const setter = mobxSetter({
     value: defaultValue,
     annotation,
-    autoRestoreWhenNotObserved,
+    autoRestoreOnBecomeUnobserved,
   })
   type TParameters = Parameters<Request>
 

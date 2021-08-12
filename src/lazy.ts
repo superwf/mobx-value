@@ -27,13 +27,13 @@ export function mobxLazy<Data, Request extends RequestFunction>({
   request,
   value: initValue,
   annotation,
-  autoRestoreWhenNotObserved,
+  autoRestoreOnBecomeUnobserved,
 }: MobxLazyOption<Data, Request>): MobxLazyValue<Data, Request> {
   const requestTarget = mobxRequest({
     value: initValue,
     annotation,
     request,
-    autoRestoreWhenNotObserved,
+    autoRestoreOnBecomeUnobserved,
   })
   let resolve: (v: Data) => void
   let reject: (e: Error) => void

@@ -130,7 +130,7 @@ describe('setter', () => {
   })
 
   it('set auto restore when not observed', () => {
-    const a = mobxSetter({ value: 1, autoRestoreWhenNotObserved: true })
+    const a = mobxSetter({ value: 1, autoRestoreOnBecomeUnobserved: true })
     const mockOnObserved = jest.fn()
     const mockOnUnobserved = jest.fn()
     const stop1 = onBecomeObserved(a, 'value', mockOnObserved)

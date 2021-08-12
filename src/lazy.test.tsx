@@ -217,7 +217,7 @@ describe('lazyProperty', () => {
   })
 
   describe('work in react', () => {
-    const user1 = mobxLazy({ value: { name: '' }, request: mockRequest, autoRestoreWhenNotObserved: true })
+    const user1 = mobxLazy({ value: { name: '' }, request: mockRequest, autoRestoreOnBecomeUnobserved: true })
 
     const Comp: FC = observer(() => {
       if (user1.value.name) {

@@ -17,9 +17,9 @@ export interface MobxBooleanValue extends MobxSetterValue<boolean> {
  * 生成MobxBooleanValue数据结构的变量
  * */
 export function mobxBoolean(
-  { value = false, autoRestoreWhenNotObserved = false }: MobxBooleanOption = { value: false },
+  { value = false, autoRestoreOnBecomeUnobserved = false }: MobxBooleanOption = { value: false },
 ): MobxBooleanValue {
-  const setter = mobxSetter({ value, autoRestoreWhenNotObserved, annotation: observable })
+  const setter = mobxSetter({ value, autoRestoreOnBecomeUnobserved, annotation: observable })
   const booleanValue: MobxBooleanValue = Object.assign(setter, {
     setTrue() {
       setter.set(true)

@@ -14,7 +14,7 @@ export interface MobxSetterOption<Data> {
    * when set default true will break main version
    * @default false
    * */
-  autoRestoreWhenNotObserved?: boolean
+  autoRestoreOnBecomeUnobserved?: boolean
 }
 
 export interface MobxSetterValue<Data> {
@@ -26,7 +26,7 @@ export interface MobxSetterValue<Data> {
 export function mobxSetter<Data>({
   value,
   annotation = observable,
-  autoRestoreWhenNotObserved = false,
+  autoRestoreOnBecomeUnobserved = false,
 }: MobxSetterOption<Data>): MobxSetterValue<Data> {
   const defaultValue = value
   const target = {
@@ -43,7 +43,7 @@ export function mobxSetter<Data>({
     restore: action,
     set: action,
   })
-  if (autoRestoreWhenNotObserved) {
+  if (autoRestoreOnBecomeUnobserved) {
     onBecomeUnobserved(target, 'value', target.restore)
   }
   return target
