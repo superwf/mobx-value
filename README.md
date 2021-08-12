@@ -33,7 +33,7 @@ interface MobxSetterOption<Data> {
     | observable.struct | observable.deep
     | observable.ref | true
   // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
-  autoRestoreWhenNotObserved?: boolean
+  autoRestoreOnBecomeUnobserved?: boolean
 }
 ```
 
@@ -67,7 +67,7 @@ interface MobxBooleanOption {
   // 默认 false
   value?: boolean,
   // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
-  autoRestoreWhenNotObserved?: boolean
+  autoRestoreOnBecomeUnobserved?: boolean
 }
 ```
 
@@ -120,7 +120,7 @@ interface MobxRequestOption<Data> {
   // set to true, prevent next request when loading, default false
   parallel?: boolean
   // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
-  autoRestoreWhenNotObserved?: boolean
+  autoRestoreOnBecomeUnobserved?: boolean
 }
 ```
 
@@ -173,7 +173,7 @@ interface MobxLazyOption<Data> {
   // set to true, prevent next request when loading, default false
   parallel?: boolean
   // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
-  autoRestoreWhenNotObserved?: boolean
+  autoRestoreOnBecomeUnobserved?: boolean
 }
 ```
 
