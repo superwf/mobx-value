@@ -17,7 +17,7 @@
     "start": "NODE_ENV=development webpack serve -c webpack.config.demo.ts",
     "buildModule": "NODE_ENV=production rollup -c rollup.config.js",
     "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.module.json && NODE_ENV=production webpack && NODE_ENV=production webpack -c webpack.config.independent.ts",
-    "prepublishOnly": "yarn test && yarn build & cp ./module/*.d.ts ./dist && standard-version",
+    "prepublishOnly": "yarn test && yarn build && cp ./module/*.d.ts ./dist && standard-version",
     "prepare": "husky install"
   },
   "main": "lib/index.js",
