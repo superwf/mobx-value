@@ -1,8 +1,6 @@
 # Mobx eazy usage encapsulation
 
-模仿 `mobx-utils` 的基于`mobx`的工具方法集，由于 `mobx-utils` 经常不能满足我的项目需求，因此便有了 `mobx-value`。
-
-也有些 api 受 ahooks 影响，但没有做到那么多复杂的功能，按需添加吧，一下子塞太多实际上用不到的东西容易造成 bug 太多测试无法覆盖。
+Like `mobx-utils`, this lib is a `mobx` tool set.
 
 基于 Mobx 6.
 
@@ -119,8 +117,18 @@ interface MobxRequestOption<Data> {
   request: (args?: any) => Promise<Data>
   // set to true, prevent next request when loading, default false
   parallel?: boolean
-  // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
+
+  /**
+   * auto run restore when not observed
+   * @default false
+   * */
   autoRestoreOnBecomeUnobserved?: boolean
+
+  /**
+   * auto cancle request when not observed and loading is not complete
+   * @default false
+   * */
+  autoCancelOnBecomeUnobserved?: boolean
 }
 ```
 
@@ -129,14 +137,13 @@ interface MobxRequestOption<Data> {
 ```typescript
 interface MobxRequestValue<Data, Request extends (args?: any) => Promise<Data>> {
   value: Data
-  // 除了等待请求完成后填充value数据，也可使用set直接设置value
   set: (v: Data) => void
   restore: () => void
   request: (...args: Parameters<Request>) => CancellablePromise<Data>
-  // 如果当前在请求中，则取消请求
+  // cancel request only when loading status
   cancel: () => void
   loading: boolean
-  /** 基于最后一次请求的参数，重新请求 */
+  /** request again with last parameters */
   refresh: () => CancellablePromise<Data>
 }
 ```

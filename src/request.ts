@@ -1,4 +1,4 @@
-import { flow, makeObservable, observable } from 'mobx'
+import { flow, makeObservable, observable, onBecomeUnobserved } from 'mobx'
 import type { CancellablePromise } from 'mobx/dist/api/flow'
 
 import type { MobxSetterOption, MobxSetterValue } from './setter'
@@ -12,12 +12,18 @@ export interface MobxRequestOption<Data, Request extends RequestFunction> extend
    * @default false
    * */
   parallel?: boolean
+
+  /**
+   * auto cancle request when not observed and loading is not complete
+   * @default false
+   * */
+  autoCancelOnBecomeUnobserved?: boolean
 }
 
 export interface MobxRequestValue<Data, Request extends RequestFunction> extends MobxSetterValue<Data> {
   error: any
   request: (...args: Parameters<Request>) => CancellablePromise<Data>
-  // request again with last parameters
+  /** request again with last parameters */
   refresh: () => CancellablePromise<Data>
   cancel(): void
   loading: boolean
@@ -32,6 +38,7 @@ export function mobxRequest<TData, Request extends RequestFunction>({
   request: requestFunction,
   annotation,
   autoRestoreOnBecomeUnobserved = false,
+  autoCancelOnBecomeUnobserved = false,
   parallel,
 }: MobxRequestOption<TData, Request>): MobxRequestValue<TData, Request> {
   const setter = mobxSetter({
@@ -87,5 +94,8 @@ export function mobxRequest<TData, Request extends RequestFunction>({
     error: observable,
     loading: observable,
   })
+  if (autoCancelOnBecomeUnobserved) {
+    onBecomeUnobserved(target, 'value', target.cancel)
+  }
   return target
 }
