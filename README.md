@@ -1,16 +1,64 @@
-# Mobx eazy usage encapsulation
+# Mobx Value
+
+- [MobxValue](#mobx-value)
+  - [Overview](#overview)
+  - [Installation](#installation)
+  - [Example](#example)
+  - [CDN](#cdn)
+  - [API](#api)
+    - [mobxSetter](#mobxsetter)
+    - [mobxBoolean](#mobxboolean)
+    - [mobxRequest](#mobxrequest)
+    - [mobxLazy](#mobxlazy)
+
+## Overview
 
 Like `mobx-utils`, this lib is a `mobx` tool set.
 
-基于 Mobx 6.
+Work with Mobx V6.
 
-## 共四个生成方法
+![Statements](./badge/badge-statements.svg)
 
-由这四种方法生成的变量，都应用在由`mobx-react`的`observer`方法生成的组件中，以实现自动响应式更新。
+![Branches](./badge/badge-branches.svg)
 
-### setter
+![Functions](./badge/badge-functions.svg)
 
-* Example
+![Lines](./badge/badge-lines.svg)
+
+## Installation
+
+```sh
+npm install -S mobx mobx-value
+// or yarn
+yarn add mobx mobx-value
+```
+
+## Example
+
+A good example is a better doc.
+
+run
+
+```sh
+git clone https://github.com/superwf/mobx-value.git
+cd mobx-value
+yarn
+yarn start
+```
+
+## CDN
+
+- Global var mode mode. Global variable name: `window.mobxValue`
+
+`<script type="javascript" src="https://unpkg.com/mobx-value/dist/index.js"></script>`
+
+## Api
+
+To work with React, use `observer` in `mobx-react-lite` with React component.
+
+### mobxSetter
+
+- Example
 
 ```typescript
 const counter = mobxSetter({ value: 1 })
@@ -21,21 +69,29 @@ counter.restore()
 counter.value // 1
 ```
 
-* Parameters type `MobxSetterOption`
+- Parameters type `MobxSetterOption`
 
 ```typescript
 interface MobxSetterOption<Data> {
   value: Data,
-  // 参考mobx文档，默认为observable，true与observable相同，其他选项按需配置
+
+  /**
+   * mobx `makeObservable` annotation option for `value`
+   * @default observable
+   * */
   annotation?: observable | observable.shallow
     | observable.struct | observable.deep
     | observable.ref | true
-  // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
+
+  /**
+   * auto run restore when leave observer context
+   * @default false
+   * */
   autoRestoreOnBecomeUnobserved?: boolean
 }
 ```
 
-* Return type `MobxSetterValue`
+- Return type `MobxSetterValue`
 
 ```typescript
 interface MobxSetterValue<Data> {
@@ -45,9 +101,9 @@ interface MobxSetterValue<Data> {
 }
 ```
 
-### boolean, 基于 setter
+### mobxBoolea
 
-* Example
+- Example
 
 ```typescript
 const modal = mobxBoolean()
@@ -58,18 +114,22 @@ modal.toggle() // true
 modal.restore() // false
 ```
 
-* Parameters type `MobxBooleanOption`
+- Parameters type `MobxBooleanOption`
 
 ```typescript
 interface MobxBooleanOption {
-  // 默认 false
+  // @default false
   value?: boolean,
-  // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
+
+  /**
+   * auto run restore when leave observer context
+   * @default false
+   * */
   autoRestoreOnBecomeUnobserved?: boolean
 }
 ```
 
-* Return type `MobxBooleanValue`
+- Return type `MobxBooleanValue`
 
 ```typescript
 interface MobxBooleanValue {
@@ -82,9 +142,9 @@ interface MobxBooleanValue {
 }
 ```
 
-### request, 基于 setter
+### mobxRequest
 
-* Example
+- Example
 
 ```typescript
 const user = mobxRequest({ value: { name: '' }, request: () => Promise.resolve({ name: 'abc' }) })
@@ -106,7 +166,7 @@ user.request() // when last request not complete
 user.request() // new request will be debounced
 ```
 
-* Parameters type `MobxRequestOption`
+- Parameters type `MobxRequestOption`
 
 ```typescript
 interface MobxRequestOption<Data> {
@@ -119,7 +179,7 @@ interface MobxRequestOption<Data> {
   parallel?: boolean
 
   /**
-   * auto run restore when not observed
+   * auto run restore when leave observer context
    * @default false
    * */
   autoRestoreOnBecomeUnobserved?: boolean
@@ -132,7 +192,7 @@ interface MobxRequestOption<Data> {
 }
 ```
 
-* Return type `MobxRequestValue`
+- Return type `MobxRequestValue`
 
 ```typescript
 interface MobxRequestValue<Data, Request extends (args?: any) => Promise<Data>> {
@@ -148,17 +208,15 @@ interface MobxRequestValue<Data, Request extends (args?: any) => Promise<Data>> 
 }
 ```
 
-### lazy, 基于 request
+### mobxLazy
 
-* Example
+- Example
 
 ```typescript
 const user = mobxLazy({ value: { name: '' }, request: () => Promise.resolve({ name: 'abc' })})
 
-// 在autorun中的代码将运行两次
-// 一次由请求触发，另一次由restore触发
-// 注意，发起lazy请求必须在observer的上下文环境中，例如autorun，reaction或mobx-react的observer包裹的组件
-// 直接使用是不会引起lazy请求的
+// Notice，the lazy value must be in observer context, such as autorun, reaction
+// outside observer context, use lazy value will not trigger request
 autorun(() => {
   console.log(user.value.name)
 })
@@ -168,7 +226,7 @@ user.restore()
 user.value.name // ''
 ```
 
-* Parameters type `MobxLazyOption`, 与 `MobxRequestOption` 相同
+- Parameters type `MobxLazyOption`, same with `MobxRequestOption`
 
 ```typescript
 interface MobxLazyOption<Data> {
@@ -177,33 +235,46 @@ interface MobxLazyOption<Data> {
     | observable.struct | observable.deep
     | observable.ref | true
   request: (args?: any) => Promise<Data>
-  // set to true, prevent next request when loading, default false
+
+  /**
+   * set to true, prevent next request when loading
+   * @default false
+   * */
   parallel?: boolean
-  // 当变量离开mobx的observed环境时，自动调用restore恢复初始数据状态，默认 false
+
+  /**
+   * auto run restore when leave observer context
+   * @default false
+   * */
   autoRestoreOnBecomeUnobserved?: boolean
+
+  /**
+   * auto cancle request when not observed and loading is not complete
+   * @default false
+   * */
+  autoCancelOnBecomeUnobserved?: boolean
 }
 ```
 
-* Return type `MobxLazyValue`
+- Return type `MobxLazyValue`
 
 ```typescript
 interface MobxLazyValue<Data, Request extends RequestFunction> {
   value: Data
   set: (v: Data) => void
-  // restore仅将value数据恢复到初始状态
   restore: () => void
   request: (...args: Parameters<Request>) => CancellablePromise<Data>
   cancel: () => void
   loading: boolean
-  /** 记录是否被请求过 */
+
+  /** @readonly */
   requested: boolean
   cancel(): void
   ready: Promise<Data>
   refresh(): void
+
   /**
-   * 执行restore，并重置为未请求状态
-   * 如果重新进入observer环境则会再次发起request
-   * 抛弃当前运行结果并重置所有属性为初始状态
+   * restore and reset request to initial status
    */
   reset(): void
 }

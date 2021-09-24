@@ -30,8 +30,7 @@ export interface MobxRequestValue<Data, Request extends RequestFunction> extends
 }
 
 /**
- * @remarks
- * 生成以包含请求方法、数据、状态的observable属性
+ * generate a mobxRequest variable
  * */
 export function mobxRequest<TData, Request extends RequestFunction>({
   value: defaultValue,
@@ -48,7 +47,7 @@ export function mobxRequest<TData, Request extends RequestFunction>({
   })
   type TParameters = Parameters<Request>
 
-  // 存放上一次的请求结果Promise
+  // store prev request Promise
   let lastRequest: CancellablePromise<TData> | null = null
   let lastParameters: any = []
   const target: MobxRequestValue<TData, Request> = Object.assign(setter, {
@@ -76,7 +75,6 @@ export function mobxRequest<TData, Request extends RequestFunction>({
   })
   const rawRequest = target.request
 
-  // 上一次请求没有完成的防抖
   target.request = (...args: TParameters) => {
     lastParameters = args
     if (!lastRequest) {
@@ -86,7 +84,6 @@ export function mobxRequest<TData, Request extends RequestFunction>({
     if (target.loading && !parallel) {
       return lastRequest
     }
-    // lastRequest.cancel()
     lastRequest = rawRequest(...args)
     return lastRequest
   }

@@ -20,7 +20,7 @@ const option: RollupOptions = {
       name: 'mobxValue',
     },
   ],
-  // external: ['mobx'],
+  external: ['mobx'],
 
   plugins: [
     babel({

@@ -1,7 +1,6 @@
 import Enzyme from 'enzyme'
 import { configure } from 'mobx'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
-import { JSDOM } from 'jsdom'
 import React from 'react'
 
 configure({ enforceActions: 'always' })

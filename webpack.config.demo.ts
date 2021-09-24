@@ -1,5 +1,7 @@
 import * as path from 'path'
 
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
+import { HtmlWebpackInjectExternalsPlugin } from 'html-webpack-inject-externals-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import open from 'open'
 import type { Configuration } from 'webpack'
@@ -8,13 +10,70 @@ const resolveRoot = (relativePath: string) => path.resolve(__dirname, relativePa
 
 const port = 3000
 
+const externals: Record<string, string> = {
+  react: 'React',
+  'react-dom': 'ReactDOM',
+  shiki: 'shiki',
+  mobx: 'mobx',
+  antd: 'antd',
+  moment: 'moment',
+  history: 'HistoryLibrary',
+  'mobx-react-lite': 'mobxReactLite',
+  'react-router-dom': 'ReactRouterDOM',
+}
+
+const unpkgHost = 'https://unpkg.com'
+
+const packages: ConstructorParameters<typeof HtmlWebpackInjectExternalsPlugin>[0]['packages'] = [
+  {
+    name: 'antd',
+    path: '/dist/antd.min.css',
+  },
+  {
+    name: 'react',
+    path: '/umd/react.development.js',
+  },
+  {
+    name: 'history',
+    path: '/umd/history.production.min.js',
+  },
+  {
+    name: 'shiki',
+    path: '',
+  },
+  {
+    name: 'react-dom',
+    path: '/umd/react-dom.development.js',
+  },
+  {
+    name: 'react-router-dom',
+    path: '/umd/react-router-dom.min.js',
+  },
+  {
+    name: 'mobx',
+    path: '/dist/mobx.umd.production.min.js',
+  },
+  {
+    name: 'moment',
+    path: '/min/moment-with-locales.min.js',
+  },
+  {
+    name: 'mobx-react-lite',
+    path: '/dist/mobxreactlite.umd.production.min.js',
+  },
+  {
+    name: 'antd',
+    path: '/dist/antd-with-locales.min.js',
+  },
+]
+
 const config: Configuration = {
   mode: 'development',
   entry: {
-    main: resolveRoot('src/demo.tsx'),
+    main: resolveRoot('demo/index.tsx'),
   },
   output: {
-    filename: 'demo.js',
+    filename: 'main.js',
     publicPath: '/',
   },
   devServer: {
@@ -31,11 +90,9 @@ const config: Configuration = {
     port,
     contentBase: './public',
     https: false,
-    after: () => open(`http://127.0.0.1:${port}`),
+    after: () => open(`http://127.0.0.1:${port}/mobxSetter`),
   },
-  externals: {
-    mobx: 'mobx',
-  },
+  externals,
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
@@ -43,7 +100,7 @@ const config: Configuration = {
     rules: [
       {
         test: /\.(js|ts|tsx)$/,
-        include: [resolveRoot('src')],
+        include: [resolveRoot('src'), resolveRoot('demo')],
         loader: 'babel-loader',
         options: {
           customize: require.resolve('babel-preset-react-app/webpack-overrides'),
@@ -52,6 +109,24 @@ const config: Configuration = {
           compact: true,
         },
       },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -59,6 +134,13 @@ const config: Configuration = {
       template: './public/index.html',
       inject: true,
       publicPath: '/',
+    }),
+    new HtmlWebpackInjectExternalsPlugin({
+      host: unpkgHost,
+      packages,
+    }),
+    new ReactRefreshWebpackPlugin({
+      overlay: false,
     }),
   ],
   devtool: 'source-map',

@@ -89,7 +89,7 @@ describe('requestProperty', () => {
     expect(user.loading).toBe(false)
   })
 
-  it('默认annotation为observable', () => {
+  it('default annotation is observable', () => {
     const mock = jest.fn(() =>
       Promise.resolve({
         name: '',
@@ -187,7 +187,7 @@ describe('requestProperty', () => {
     stop2()
   })
 
-  it.only('set auto cancel when not observed', async () => {
+  it('set auto cancel when not observed', async () => {
     const mock = jest.fn(() => new Promise(resolve => setTimeout(() => resolve('aaa'), 10)))
     const name = mobxRequest({ value: '', request: mock, parallel: true, autoCancelOnBecomeUnobserved: true })
     const mockOnObserved = jest.fn()
@@ -211,6 +211,7 @@ describe('requestProperty', () => {
     await sleep(30)
     expect(name.value).toBe('')
     expect(spy).toHaveBeenCalledTimes(1)
+    spy.mockRestore()
 
     stop1()
     stop2()

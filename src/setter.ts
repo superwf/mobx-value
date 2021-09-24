@@ -11,7 +11,7 @@ export interface MobxSetterOption<Data> {
   annotation?: Exclude<AnnotationMapEntry, false>
 
   /**
-   * auto run restore when not observed
+   * auto run restore when leave observer context
    * @default false
    * */
   autoRestoreOnBecomeUnobserved?: boolean

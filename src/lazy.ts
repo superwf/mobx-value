@@ -12,16 +12,15 @@ export interface MobxLazyValue<Data, Request extends RequestFunction> extends Mo
   requested: boolean
   cancel(): void
   ready: Promise<Data>
+
   /**
-   * 执行restore，并重置为未请求状态
-   * 如果重新进入observer环境则会再次发起request
-   * 抛弃当前运行结果并重置所有属性为初始状态
+   * restore and reset request to initial status
    */
   reset(): void
 }
 
 /**
- * 修饰属性，该属性会成为 MobxLazyValue 数据结构
+ * generate a MobxLazyValue variable
  * */
 export function mobxLazy<Data, Request extends RequestFunction>({
   request,
@@ -54,7 +53,7 @@ export function mobxLazy<Data, Request extends RequestFunction>({
       requestResult.then(resolve).catch(reject)
       return requestResult
     },
-    /** 抛弃当前运行结果并重置所有属性为初始状态 */
+    /** restore and reset all request status to initial */
     reset: () => {
       target.cancel()
       target.requested = false

@@ -17,9 +17,11 @@ module.exports = {
     es6: true,
   },
   rules: {
+    'no-use-before-define': 0,
     'spaced-comment': ['error', 'always', { markers: ['/'] }],
     'import/no-unresolved': 0,
     'import/no-extraneous-dependencies': 0,
+    'no-underscore-dangle': 0,
     'prettier/prettier': [
       'error',
       {

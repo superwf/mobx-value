@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react'
-// import { mount } from 'enzyme'
 import { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
@@ -51,6 +50,7 @@ describe('lazyProperty', () => {
     })
     expect(user.loading).toBe(true)
     await user.ready
+    expect(user.requested).toBe(true)
     expect(user.loading).toBe(false)
     expect(user.value).toEqual({ name: 'abc' })
     dispose()
@@ -95,7 +95,7 @@ describe('lazyProperty', () => {
     dispose()
   })
 
-  it('如果已经在请求状态，由于默认防抖，只请求一次', async () => {
+  it('default debounce，only request once', async () => {
     user.refresh()
     const dispose = autorun(() => {
       noop(user.value.name)
@@ -131,7 +131,7 @@ describe('lazyProperty', () => {
     dispose()
   })
 
-  it('获取数据出错时catch', async () => {
+  it('catch when request occurs error', async () => {
     const errorUser = mobxLazy({
       value: { name: '' },
       request: () => Promise.reject(new Error('fetch error')),
@@ -148,7 +148,7 @@ describe('lazyProperty', () => {
     })
   })
 
-  it('refresh连续执行，后面的refresh会被防抖忽略', async () => {
+  it('refresh debounce', async () => {
     let firstInvoke = true
     async function mockRequestLazy() {
       let resolveValue = 'first'
@@ -174,7 +174,7 @@ describe('lazyProperty', () => {
     dispose()
   })
 
-  describe('测试annotation为shallow', () => {
+  describe('use shallow for annotation', () => {
     it('指定shallow', () => {
       const notRecursiveUser = mobxLazy({
         value: { box: [1, 2, 3] },
@@ -184,7 +184,7 @@ describe('lazyProperty', () => {
       expect(isObservable(notRecursiveUser.value.box)).toBe(false)
     })
 
-    it('默认不指定为observable', () => {
+    it('default observable', () => {
       const notRecursiveUser = mobxLazy({
         value: { box: [1, 2, 3] },
         request: () => Promise.resolve({ box: [4, 5, 6] }),

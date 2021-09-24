@@ -3,8 +3,10 @@
   "compilerOptions": {
     "target": "ESNext",
     "noEmit": false,
-    "outDir": "module",
-    "module": "ESNext"
+    "outDir": "type",
+    "module": "ESNext",
+    "emitDeclarationOnly": true,
+    "declaration": true
   },
   "include": [],
   "files": [
