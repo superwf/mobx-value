@@ -37,7 +37,7 @@ yarn add mobx mobx-value
 
 A good example is a better doc.
 
-run
+Play it with the following steps.
 
 ```sh
 git clone https://github.com/superwf/mobx-value.git
@@ -101,7 +101,9 @@ interface MobxSetterValue<Data> {
 }
 ```
 
-### mobxBoolea
+### mobxBoolean
+
+extends from mobxSetter, is a specifically for boolean type.
 
 - Example
 
@@ -143,6 +145,8 @@ interface MobxBooleanValue {
 ```
 
 ### mobxRequest
+
+extends from mobxSetter, all mobxSetter properties are available.
 
 - Example
 
@@ -209,6 +213,8 @@ interface MobxRequestValue<Data, Request extends (args?: any) => Promise<Data>> 
 ```
 
 ### mobxLazy
+
+extends from mobxRequest, all mobxRequest properties are available.
 
 - Example
 

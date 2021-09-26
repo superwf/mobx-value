@@ -12,7 +12,7 @@ const plusCounter = () => counter.set(counter.value + 1)
 const minusCounter = () => counter.set(counter.value - 1)
 
 export const MobxSetter: FC = observer(() => (
-  <Card className="h-full">
+  <Card title="MobxSetter default useage" className="text-center">
     <Row className="mb-4" justify="center">
       Counter: {counter.value}
     </Row>

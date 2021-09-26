@@ -4,6 +4,7 @@ import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import { HtmlWebpackInjectExternalsPlugin } from 'html-webpack-inject-externals-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import open from 'open'
+import { ProvidePlugin } from 'webpack'
 import type { Configuration } from 'webpack'
 
 const resolveRoot = (relativePath: string) => path.resolve(__dirname, relativePath)
@@ -95,6 +96,9 @@ const config: Configuration = {
   externals,
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
+    fallback: {
+      assert: require.resolve('assert'),
+    },
   },
   module: {
     rules: [
@@ -141,6 +145,9 @@ const config: Configuration = {
     }),
     new ReactRefreshWebpackPlugin({
       overlay: false,
+    }),
+    new ProvidePlugin({
+      process: 'process/browser',
     }),
   ],
   devtool: 'source-map',

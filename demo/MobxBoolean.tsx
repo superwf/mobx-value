@@ -7,7 +7,7 @@ import { mobxBoolean } from '../src'
 const visible = mobxBoolean()
 
 export const MobxBoolean: FC = observer(() => (
-  <Card className="text-center">
+  <Card title="MobxBoolean default usage" className="text-center">
     <Row className="mb-4" justify="center">
       Notice: When go other page, return back, the popover will <b className="px-2">KEEP</b> its state.
     </Row>

@@ -10,7 +10,7 @@ const visible = mobxBoolean({
 })
 
 export const MobxBooleanAutoRestore: FC = observer(() => (
-  <Card className="text-center">
+  <Card title="MobxBoolean auto restore" className="text-center">
     <Row className="mb-4" justify="center">
       Notice: When go other page, return back, the popover will <b className="px-2">RESTORE</b> its initial state.
     </Row>

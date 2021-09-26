@@ -6,9 +6,14 @@ import { Route, Router, Switch } from 'react-router-dom'
 
 import { Sider } from './Sider'
 
+import { Home } from '../Home'
 import { MobxBoolean } from '../MobxBoolean'
 import { MobxBooleanAutoRestore } from '../MobxBooleanAutoRestore'
+import { MobxLazy } from '../MobxLazy'
 import { MobxRequest } from '../MobxRequest'
+import { MobxRequestAllowParallel } from '../MobxRequestAllowParallel'
+import { MobxRequestAutoCancel } from '../MobxRequestAutoCancel'
+import { MobxRequestAutoRestore } from '../MobxRequestAutoRestore'
 import { MobxRequestDefaultPreventParallel } from '../MobxRequestDefaultPreventParallel'
 import { MobxSetter } from '../MobxSetter'
 import { MobxSetterAutoRestore } from '../MobxSetterAutoRestore'
@@ -20,7 +25,11 @@ const setterAutoRestoreCode = raw('../MobxSetterAutoRestore.tsx')
 const booleanCode = raw('../MobxBoolean.tsx')
 const booleanAutoRestoreCode = raw('../MobxBooleanAutoRestore.tsx')
 const requestCode = raw('../MobxRequest.tsx')
+const requestAutoRestoreCode = raw('../MobxRequestAutoRestore.tsx')
 const requestDefaultPreventParallelCode = raw('../MobxRequestDefaultPreventParallel.tsx')
+const requestAllowParallelCode = raw('../MobxRequestAllowParallel.tsx')
+const requestAutoCancelCode = raw('../MobxRequestAutoCancel.tsx')
+const lazyCode = raw('../MobxLazy.tsx')
 
 const { Content } = Layout
 
@@ -31,6 +40,7 @@ export const App: FC = observer(() => (
       <Layout>
         <Content>
           <Switch location={router.location}>
+            <Route path="/api" component={Home} />
             <Route
               path="/mobxSetter"
               component={() => <RenderWithSourceCode code={setterCode} Component={MobxSetter} />}
@@ -54,6 +64,12 @@ export const App: FC = observer(() => (
               component={() => <RenderWithSourceCode code={requestCode} Component={MobxRequest} />}
             />
             <Route
+              path="/mobxRequestAutoRestore"
+              component={() => (
+                <RenderWithSourceCode code={requestAutoRestoreCode} Component={MobxRequestAutoRestore} />
+              )}
+            />
+            <Route
               path="/mobxRequestDefaultPreventParallel"
               component={() => (
                 <RenderWithSourceCode
@@ -62,6 +78,17 @@ export const App: FC = observer(() => (
                 />
               )}
             />
+            <Route
+              path="/mobxRequestAllowParallel"
+              component={() => (
+                <RenderWithSourceCode code={requestAllowParallelCode} Component={MobxRequestAllowParallel} />
+              )}
+            />
+            <Route
+              path="/mobxRequestAutoCancel"
+              component={() => <RenderWithSourceCode code={requestAutoCancelCode} Component={MobxRequestAutoCancel} />}
+            />
+            <Route path="/mobxLazy" component={() => <RenderWithSourceCode code={lazyCode} Component={MobxLazy} />} />
           </Switch>
         </Content>
       </Layout>

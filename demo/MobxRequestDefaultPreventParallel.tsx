@@ -1,15 +1,11 @@
 import { Button, Card, Row, Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
-import type { FC } from 'react'
+import * as React from 'react'
 
-// import { mockRequest } from './mockRequest'
+import type { User } from './type'
 
 import { mobxRequest } from '../src'
 import { sleep } from '../src/sleep'
-
-type User = {
-  name: string
-}
 
 const userRequest = mobxRequest({
   value: { name: '' } as User,
@@ -19,25 +15,31 @@ const userRequest = mobxRequest({
   },
 })
 
-export const MobxRequestDefaultPreventParallel: FC = observer(() => (
-  <Card className="h-full">
-    <Row className="mb-4" justify="center">
-      User name:
-      <Spin spinning={userRequest.loading}>
-        <b className="px-2">{userRequest.value.name}</b>
-      </Spin>
-    </Row>
-    <Row className="mb-4" justify="center">
-      This time, the button does not has loading state to prevent repeat click, and by default, mobxRequest will not
-      request before previous request finished.
-    </Row>
-    <Row className="flex justify-center align-middle">
-      <Button type="primary" onClick={() => userRequest.request()}>
-        click here as quick as you can, and watch the chrome network pannel.
-      </Button>
-      <Button type="ghost" onClick={userRequest.restore}>
-        restore user blank name
-      </Button>
-    </Row>
-  </Card>
-))
+export const MobxRequestDefaultPreventParallel: React.FC = observer(() => {
+  const onClick = React.useCallback(() => {
+    userRequest.request()
+  }, [])
+  return (
+    <Card title="MobxRequest default prevent parallel" className="text-center">
+      <Row className="mb-4" justify="center">
+        User name:
+        <Spin spinning={userRequest.loading}>
+          <b className="px-2">{userRequest.value.name}</b>
+        </Spin>
+      </Row>
+      <Row className="mb-4" justify="center">
+        This time, the button does not has loading state to prevent repeat click, and by default, mobxRequest will
+        <b className="px-2">NOT</b>
+        request before previous request finished.
+      </Row>
+      <Row className="flex justify-center align-middle">
+        <Button type="primary" onClick={onClick}>
+          click here as quick as you can, and watch the chrome network pannel.
+        </Button>
+        <Button type="ghost" onClick={userRequest.restore}>
+          restore user blank name
+        </Button>
+      </Row>
+    </Card>
+  )
+})

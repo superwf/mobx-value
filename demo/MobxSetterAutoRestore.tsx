@@ -13,7 +13,7 @@ const plusCounter = () => counter.set(counter.value + 1)
 const minusCounter = () => counter.set(counter.value - 1)
 
 export const MobxSetterAutoRestore: FC = observer(() => (
-  <Card className="h-full">
+  <Card title="MobxSetter auto restore initial value" className="text-center">
     <Row justify="center">Counter: {counter.value}</Row>
     <Row className="mb-4" justify="center">
       Notice: When go other page, return back, the counter will <b className="px-2">RESTORE</b> its origin value
