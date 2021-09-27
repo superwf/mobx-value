@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](https://github.com/superwf/mobx-value/compare/v0.2.4...v0.2.5) (2021-09-27)
+
+
+### Features
+
+* add autoCancelRequest ([6e8c895](https://github.com/superwf/mobx-value/commit/6e8c895d479121e1fbfc2d5cd001b94e5806125f))
+
 ### [0.2.4](https://github.com/superwf/mobx-value/compare/v0.2.3...v0.2.4) (2021-08-12)
 
 ### [0.2.3](https://github.com/superwf/mobx-value/compare/v0.2.2...v0.2.3) (2021-08-12)
