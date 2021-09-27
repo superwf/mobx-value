@@ -1,6 +1,6 @@
 {
   "name": "mobx-value",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "superwf@gmail.com",
   "repository": {
@@ -10,16 +10,16 @@
   "files": [
     "module",
     "dist",
-    "type",
-    "lib"
+    "lib",
+    "type"
   ],
   "scripts": {
     "test": "jest",
     "start": "NODE_ENV=development webpack serve -c webpack.config.demo.ts",
     "buildModule": "NODE_ENV=production rollup -c rollup.config.js",
-    "clean": "rimraf {dist,type,lib,module} -f",
+    "clean": "rimraf {module,dist,lib,type} -f",
     "badge": "jest-coverage-badges output ./badge",
-    "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.module.json && tsc -p tsconfig.declaration.json && NODE_ENV=production webpack && NODE_ENV=production webpack -c webpack.config.independent.ts",
+    "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.module.json && tsc -p tsconfig.declaration.json && NODE_ENV=production webpack && NODE_ENV=production webpack -c webpack.config.independent.ts && cp type/* module/ && cp type/* dist/ && cp type/* lib/",
     "prepublishOnly": "yarn test && yarn build && standard-version",
     "prepare": "husky install"
   },
@@ -102,7 +102,7 @@
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2"
   },
-  "peerDependencies": {
+  "dependencies": {
     "mobx": ">=6.0.0"
   }
 }
