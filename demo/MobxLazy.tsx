@@ -30,12 +30,16 @@ export const MobxLazy: React.FC = observer(() => (
       And its value will <b className="px-2">KEEP</b> unless manually restore.
     </Row>
     <Row className="mb-4" justify="center">
-      MobxLazy support all MobxRequest features, such as autoRestoreOnBecomeUnobserved, autoCancelOnBecomeUnobserved.
+      MobxLazy support all MobxRequest features, such as autoRestoreOnBecomeUnobserved and autoCancelOnBecomeUnobserved.
     </Row>
     <Row className="flex justify-center align-middle">
-      <Button type="ghost" onClick={userLazyRequest.restore}>
-        restore user blank name
+      <Button type="ghost" onClick={userLazyRequest.reset}>
+        <b className="pr-2">RESET</b> user blank name
       </Button>
+    </Row>
+    <Row className="mt-4" justify="center">
+      Note: <b className="pl-2">RESET</b>, not RESTORE, RESTORE only fill the value back. <b className="mx-2">RESET</b>
+      restore value also reset the requested status.
     </Row>
   </Card>
 ))
