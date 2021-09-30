@@ -7,8 +7,10 @@ import type { RequestFunction } from './type'
 
 export interface MobxRequestOption<Data, Request extends RequestFunction> extends MobxSetterOption<Data> {
   request: Request
+
   /**
-   * set to true, prevent next request when loading
+   * default mobxRequest prevent next request when last request is loading
+   * set to true to allow next request when loading
    * @default false
    * */
   parallel?: boolean

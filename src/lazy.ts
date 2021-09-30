@@ -9,8 +9,18 @@ import type { RequestFunction } from './type'
 export type MobxLazyOption<D, R extends RequestFunction> = MobxRequestOption<D, R>
 
 export interface MobxLazyValue<Data, Request extends RequestFunction> extends MobxRequestValue<Data, Request> {
+  /**
+   * status tag, do not modify it
+   * @readonly
+   */
   requested: boolean
   cancel(): void
+
+  /**
+   * last request ready promise
+   * when need some operate after this data is loaded
+   * use `await lazy.ready`
+   * * */
   ready: Promise<Data>
 
   /**
@@ -53,7 +63,11 @@ export function mobxLazy<Data, Request extends RequestFunction>({
       requestResult.then(resolve).catch(reject)
       return requestResult
     },
-    /** restore and reset all request status to initial */
+    /**
+     * restore value also reset all request status to initial
+     * when next time it enter mobx observer context
+     * it will request again
+     * */
     reset: () => {
       target.cancel()
       target.requested = false

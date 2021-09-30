@@ -4,12 +4,14 @@
   - [Overview](#overview)
   - [Installation](#installation)
   - [Example](#example)
+    - [Work with React](#work-with-react)
   - [CDN](#cdn)
   - [API](#api)
     - [mobxSetter](#mobxsetter)
     - [mobxBoolean](#mobxboolean)
     - [mobxRequest](#mobxrequest)
     - [mobxLazy](#mobxlazy)
+  - [Build doc](#build-doc)
 
 ## Overview
 
@@ -46,15 +48,39 @@ yarn
 yarn start
 ```
 
+### Work with React
+
+To work with React, use `observer` in `mobx-react-lite` with React component.
+
+```typescript
+import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
+import { render } from 'react-dom'
+import { mobxSetter } from 'mobx-value'
+
+const counter = mobxSetter({
+  value: 1,
+})
+
+export const Example: FC = observer(() => (
+  <div>
+    Counter: {counter.value}
+    <button type="primary" onClick={() => counter.set(counter.value + 1)}>
+      Counter ++
+    </button>
+  </div>
+))
+
+render(<Example />, document.querySelector('#app'))
+```
+
 ## CDN
 
-- Global var mode mode. Global variable name: `window.mobxValue`
+- Use `mobx-value` by global var. Global variable name is `window.mobxValue`
 
 `<script type="javascript" src="https://unpkg.com/mobx-value/dist/index.js"></script>`
 
 ## Api
-
-To work with React, use `observer` in `mobx-react-lite` with React component.
 
 ### mobxSetter
 
@@ -103,7 +129,7 @@ interface MobxSetterValue<Data> {
 
 ### mobxBoolean
 
-extends from mobxSetter, is a specifically for boolean type.
+Extends from mobxSetter, is a specifically for boolean type.
 
 - Example
 
@@ -120,7 +146,9 @@ modal.restore() // false
 
 ```typescript
 interface MobxBooleanOption {
-  // @default false
+  /**
+    * @default false
+    */
   value?: boolean,
 
   /**
@@ -146,12 +174,15 @@ interface MobxBooleanValue {
 
 ### mobxRequest
 
-extends from mobxSetter, all mobxSetter properties are available.
+Extends from mobxSetter, all mobxSetter properties are available.
 
 - Example
 
 ```typescript
-const user = mobxRequest({ value: { name: '' }, request: () => Promise.resolve({ name: 'abc' }) })
+const user = mobxRequest({
+  value: { name: '' },
+  request: () => Promise.resolve({ name: 'abc' }),
+})
 
 user.value.name // ''
 user.loading // false
@@ -164,7 +195,7 @@ user.value.name // ''
 user.request()
 user.cancel() // cancel last request
 
-/** only request once */
+// only request once
 user.request() // auto debounce
 user.request() // when last request not complete
 user.request() // new request will be debounced
@@ -179,7 +210,10 @@ interface MobxRequestOption<Data> {
     | observable.struct | observable.deep
     | observable.ref | true
   request: (args?: any) => Promise<Data>
-  // set to true, prevent next request when loading, default false
+
+  /**
+    * set to true, prevent next request when loading, default false
+    */
   parallel?: boolean
 
   /**
@@ -207,7 +241,9 @@ interface MobxRequestValue<Data, Request extends (args?: any) => Promise<Data>> 
   // cancel request only when loading status
   cancel: () => void
   loading: boolean
-  /** request again with last parameters */
+  /**
+    * request again with last parameters
+    */
   refresh: () => CancellablePromise<Data>
 }
 ```
@@ -243,7 +279,8 @@ interface MobxLazyOption<Data> {
   request: (args?: any) => Promise<Data>
 
   /**
-   * set to true, prevent next request when loading
+   * default mobxRequest prevent next request when last request is loading
+   * set to true to allow next request when loading
    * @default false
    * */
   parallel?: boolean
@@ -273,15 +310,30 @@ interface MobxLazyValue<Data, Request extends RequestFunction> {
   cancel: () => void
   loading: boolean
 
-  /** @readonly */
+  /**
+   * status tag, do not modify it
+   * @readonly
+   */
   requested: boolean
   cancel(): void
+
+  /**
+   * last request ready promise
+   * when need some operate after this data is loaded
+   * use `await lazy.ready`
+   * * */
   ready: Promise<Data>
   refresh(): void
 
   /**
-   * restore and reset request to initial status
-   */
+   * restore value also reset all request status to initial
+   * when next time it enter mobx observer context
+   * it will request again
+   * */
   reset(): void
 }
 ```
+
+## Build doc
+
+[BUILD.md](./BUILD.md)
