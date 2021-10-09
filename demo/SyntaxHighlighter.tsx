@@ -1,5 +1,9 @@
+import { Skeleton } from 'antd'
+import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 import * as shiki from 'shiki'
+
+import { mobxBoolean } from '../src'
 
 export type Props = {
   code: string
@@ -22,13 +26,18 @@ const getHighlighter = async () => {
 /**
  * SyntaxHighlighter with shiki
  * */
-export const SyntaxHighlighter: React.FC<Props> = ({ code, lang }) => {
+export const SyntaxHighlighter: React.FC<Props> = observer(({ code, lang }) => {
   const [highlightedCode, setHighlightedCode] = React.useState('')
+  const loading = React.useMemo(() => mobxBoolean({ value: true }), [])
   React.useEffect(() => {
     getHighlighter().then(highlighter => {
       const highlighted = highlighter.codeToHtml(code, lang)
       setHighlightedCode(highlighted)
+      loading.setFalse()
     })
   }, [code])
+  if (loading.value) {
+    return <Skeleton active />
+  }
   return <div dangerouslySetInnerHTML={{ __html: highlightedCode }}></div>
-}
+})

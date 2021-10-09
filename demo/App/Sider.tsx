@@ -41,6 +41,9 @@ export const Sider: FC = observer(() => (
       <Menu.Item key="/mobxLazy">
         <Link to="/mobxLazy">mobxLazy</Link>
       </Menu.Item>
+      <Menu.Item key="/multipleInstance">
+        <Link to="/multipleInstance">multiple instance in one page</Link>
+      </Menu.Item>
     </Menu>
   </Layout.Sider>
 ))

@@ -12,6 +12,7 @@
     - [mobxRequest](#mobxrequest)
     - [mobxLazy](#mobxlazy)
   - [Build doc](#build-doc)
+  - [TODO](#todo)
 
 ## Overview
 
@@ -337,3 +338,11 @@ interface MobxLazyValue<Data, Request extends RequestFunction> {
 ## Build doc
 
 [BUILD.md](./BUILD.md)
+
+## TODO
+
+Something to be inproved in future.
+
+- [] add optional name parameter, to show debug information.
+
+- [] add delay time for loading debounce.

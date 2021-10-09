@@ -17,6 +17,7 @@ import { MobxRequestAutoRestore } from '../MobxRequestAutoRestore'
 import { MobxRequestDefaultPreventParallel } from '../MobxRequestDefaultPreventParallel'
 import { MobxSetter } from '../MobxSetter'
 import { MobxSetterAutoRestore } from '../MobxSetterAutoRestore'
+import { MultipleInstance } from '../MultipleInstance'
 import { RenderWithSourceCode } from '../RenderWithSourceCode'
 import { router } from '../router'
 
@@ -30,6 +31,7 @@ const requestDefaultPreventParallelCode = raw('../MobxRequestDefaultPreventParal
 const requestAllowParallelCode = raw('../MobxRequestAllowParallel.tsx')
 const requestAutoCancelCode = raw('../MobxRequestAutoCancel.tsx')
 const lazyCode = raw('../MobxLazy.tsx')
+const multipleInstanceCode = raw('../MultipleInstance.tsx')
 
 const { Content } = Layout
 
@@ -89,6 +91,10 @@ export const App: FC = observer(() => (
               component={() => <RenderWithSourceCode code={requestAutoCancelCode} Component={MobxRequestAutoCancel} />}
             />
             <Route path="/mobxLazy" component={() => <RenderWithSourceCode code={lazyCode} Component={MobxLazy} />} />
+            <Route
+              path="/multipleInstance"
+              component={() => <RenderWithSourceCode code={multipleInstanceCode} Component={MultipleInstance} />}
+            />
           </Switch>
         </Content>
       </Layout>
