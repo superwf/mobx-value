@@ -13,6 +13,16 @@
     "lib",
     "type"
   ],
+  "keywords": [
+    "mobx",
+    "mobservable",
+    "observable",
+    "data flow",
+    "state management",
+    "model",
+    "react",
+    "reactjs"
+  ],
   "scripts": {
     "test": "jest",
     "start": "NODE_ENV=development webpack serve -c webpack.config.demo.ts",
