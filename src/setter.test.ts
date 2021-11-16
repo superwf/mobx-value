@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved, runInAction } from 'mobx'
 
-import { mobxSetter } from '.'
+import { mobxSetter, setter } from '.'
 
 describe('setter', () => {
   const n = mobxSetter({ value: 1 })
@@ -152,5 +152,9 @@ describe('setter', () => {
 
     stop1()
     stop2()
+  })
+
+  it('short alias', () => {
+    expect(setter).toBe(mobxSetter)
   })
 })

@@ -1,6 +1,6 @@
 import { autorun, observe } from 'mobx'
 
-import { mobxBoolean } from '.'
+import { boolean, mobxBoolean } from '.'
 
 describe('mobxBoolean', () => {
   const a = mobxBoolean()
@@ -60,5 +60,9 @@ describe('mobxBoolean', () => {
     })
     dispose()
     expect(b.value).toBe(false)
+  })
+
+  it('short alias', () => {
+    expect(boolean).toBe(mobxBoolean)
   })
 })

@@ -6,7 +6,7 @@ import type { FC } from 'react'
 import { noop } from './noop'
 import { sleep } from './sleep'
 
-import { mobxLazy } from '.'
+import { lazy, mobxLazy } from '.'
 
 describe('lazyProperty', () => {
   let mockRequest = jest.fn(() =>
@@ -259,5 +259,9 @@ describe('lazyProperty', () => {
       stop1()
       stop2()
     })
+  })
+
+  it('short alias', () => {
+    expect(lazy).toBe(mobxLazy)
   })
 })

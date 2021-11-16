@@ -1,32 +1,38 @@
 # Mobx Value
 
+`mobx-value` is a simple and small data management lib, with it data decouple from component.
+
+The most outstanding of `mobx-value` is, you do not have to create much structure layer code, as `reducer` or `action` or `dispatch`.
+
 - [MobxValue](#mobx-value)
   - [Overview](#overview)
   - [Installation](#installation)
+  - [API](#api)
+    - [Setter](#setter)
+    - [Boolean](#boolean)
+    - [Request](#request)
+    - [Lazy](#lazy)
   - [Example](#example)
     - [Work with React](#work-with-react)
   - [CDN](#cdn)
-  - [API](#api)
-    - [mobxSetter](#mobxsetter)
-    - [mobxBoolean](#mobxboolean)
-    - [mobxRequest](#mobxrequest)
-    - [mobxLazy](#mobxlazy)
   - [Build doc](#build-doc)
   - [TODO](#todo)
 
 ## Overview
 
-Like `mobx-utils`, this lib is a `mobx` tool set.
+If you feel redux(or other libs similar to redux) is reduant, and have strong need of data management out of component. Try this one.
 
-Work with Mobx V6.
+By `mobx-value`, just create a data by `setter`(or request or boolean or lazy), use it in a component, wrap the component with `observer` from `mobx-react-lite`, it works.
 
-![Statements](./badge/badge-statements.svg)
+Note: `mobx-value `Work with `Mobx` > 6.0.0.
 
-![Branches](./badge/badge-branches.svg)
+![Statements](https://raw.githubusercontent.com/superwf/mobx-value/master/badge/badge-statements.svg)
 
-![Functions](./badge/badge-functions.svg)
+![Branches](https://raw.githubusercontent.com/superwf/mobx-value/master/badge/badge-branches.svg)
 
-![Lines](./badge/badge-lines.svg)
+![Functions](https://raw.githubusercontent.com/superwf/mobx-value/master/badge/badge-functions.svg)
+
+![Lines](https://github.com/superwf/mobx-value/raw/master/badge/badge-lines.svg)
 
 ## Installation
 
@@ -36,59 +42,16 @@ npm install -S mobx mobx-value
 yarn add mobx mobx-value
 ```
 
-## Example
-
-A good example is a better doc.
-
-Play it with the following steps.
-
-```sh
-git clone https://github.com/superwf/mobx-value.git
-cd mobx-value
-yarn
-yarn start
-```
-
-### Work with React
-
-To work with React, use `observer` in `mobx-react-lite` with React component.
-
-```typescript
-import { observer } from 'mobx-react-lite'
-import type { FC } from 'react'
-import { render } from 'react-dom'
-import { mobxSetter } from 'mobx-value'
-
-const counter = mobxSetter({
-  value: 1,
-})
-
-export const Example: FC = observer(() => (
-  <div>
-    Counter: {counter.value}
-    <button type="primary" onClick={() => counter.set(counter.value + 1)}>
-      Counter ++
-    </button>
-  </div>
-))
-
-render(<Example />, document.querySelector('#app'))
-```
-
-## CDN
-
-- Use `mobx-value` by global var. Global variable name is `window.mobxValue`
-
-`<script type="javascript" src="https://unpkg.com/mobx-value/dist/index.js"></script>`
-
 ## Api
 
-### mobxSetter
+### setter
 
 - Example
 
 ```typescript
-const counter = mobxSetter({ value: 1 })
+import { setter } from 'mobx-value'
+
+const counter = setter({ value: 1 })
 counter.value // 1
 counter.set(2)
 counter.value // 2
@@ -128,14 +91,16 @@ interface MobxSetterValue<Data> {
 }
 ```
 
-### mobxBoolean
+### boolean
 
-Extends from mobxSetter, is a specifically for boolean type.
+Extends from setter, is a specifically for bool value.
 
 - Example
 
 ```typescript
-const modal = mobxBoolean()
+import { boolean } from 'mobx-value'
+
+const modal = boolean()
 modal.value // false
 modal.setTrue() // true
 modal.setFalse // false
@@ -173,14 +138,16 @@ interface MobxBooleanValue {
 }
 ```
 
-### mobxRequest
+### request
 
-Extends from mobxSetter, all mobxSetter properties are available.
+Extends from setter, all setter properties are available.
 
 - Example
 
 ```typescript
-const user = mobxRequest({
+import { request } from 'mobx-value'
+
+const user = request({
   value: { name: '' },
   request: () => Promise.resolve({ name: 'abc' }),
 })
@@ -249,14 +216,16 @@ interface MobxRequestValue<Data, Request extends (args?: any) => Promise<Data>> 
 }
 ```
 
-### mobxLazy
+### lazy
 
-extends from mobxRequest, all mobxRequest properties are available.
+extends from `request`, all `request` properties are available.
 
 - Example
 
 ```typescript
-const user = mobxLazy({ value: { name: '' }, request: () => Promise.resolve({ name: 'abc' })})
+import { lazy } from 'mobx-value'
+
+const user = lazy({ value: { name: '' }, request: () => Promise.resolve({ name: 'abc' })})
 
 // Notice，the lazy value must be in observer context, such as autorun, reaction
 // outside observer context, use lazy value will not trigger request
@@ -280,7 +249,7 @@ interface MobxLazyOption<Data> {
   request: (args?: any) => Promise<Data>
 
   /**
-   * default mobxRequest prevent next request when last request is loading
+   * request default prevent next request when last request is loading
    * set to true to allow next request when loading
    * @default false
    * */
@@ -334,6 +303,59 @@ interface MobxLazyValue<Data, Request extends RequestFunction> {
   reset(): void
 }
 ```
+
+### Alias
+
+At early version, the export method is `mobxSetter`, `mobxBoolean`, `mobxRequest` and `mobxLazy`.
+
+From v1.1, add short alias `setter`, `boolean`, `request` and `lazy`.
+
+## Example
+
+A good example is a better doc.
+
+This repo source code also includes examples.
+
+Play it with the following steps.
+
+```sh
+git clone https://github.com/superwf/mobx-value.git
+cd mobx-value
+yarn
+yarn start
+```
+
+### Work with React
+
+To work with React, use `observer` in `mobx-react-lite` with React component.
+
+```typescript
+import { observer } from 'mobx-react-lite'
+import type { FC } from 'react'
+import { render } from 'react-dom'
+import { setter } from 'mobx-value'
+
+const counter = setter({
+  value: 1,
+})
+
+export const Example: FC = observer(() => (
+  <div>
+    Counter: {counter.value}
+    <button type="primary" onClick={() => counter.set(counter.value + 1)}>
+      Counter ++
+    </button>
+  </div>
+))
+
+render(<Example />, document.querySelector('#app'))
+```
+
+## CDN
+
+- Use `mobx-value` by from cdn, Global variable name is `window.mobxValue`
+
+`<script type="javascript" src="https://unpkg.com/mobx-value/dist/index.js"></script>`
 
 ## Build doc
 

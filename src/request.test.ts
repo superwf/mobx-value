@@ -3,7 +3,7 @@ import { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved
 
 import { sleep } from './sleep'
 
-import { mobxRequest } from '.'
+import { mobxRequest, request } from '.'
 
 describe('requestProperty', () => {
   const mockFetch = jest.fn(
@@ -215,5 +215,9 @@ describe('requestProperty', () => {
 
     stop1()
     stop2()
+  })
+
+  it('short alias', () => {
+    expect(request).toBe(mobxRequest)
   })
 })
