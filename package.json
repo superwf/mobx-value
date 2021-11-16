@@ -78,8 +78,8 @@
     "lodash": "^4.17.21",
     "markdownlint": "^0.23.1",
     "markdownlint-cli": "^0.27.1",
-    "mobx": "^6.3.3",
-    "mobx-react-lite": "^3.2.1",
+    "mobx": "^6.3.7",
+    "mobx-react-lite": "^3.2.2",
     "open": "^8.2.0",
     "path-to-regexp": "^6.2.0",
     "postcss": "^8.3.7",
@@ -106,7 +106,10 @@
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2"
   },
-  "dependencies": {
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "peerDependencies": {
     "mobx": ">=6.0.0"
   }
 }

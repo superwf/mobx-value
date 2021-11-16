@@ -18,4 +18,14 @@ export type {
   MobxBooleanValue,
 }
 export { mobxSetter, mobxRequest, mobxBoolean, mobxLazy }
-export default { mobxSetter, mobxRequest, mobxBoolean, mobxLazy }
+export { mobxSetter as setter, mobxRequest as request, mobxBoolean as boolean, mobxLazy as lazy }
+export default {
+  setter: mobxSetter,
+  mobxSetter,
+  request: mobxRequest,
+  mobxRequest,
+  boolean: mobxBoolean,
+  mobxBoolean,
+  lazy: mobxLazy,
+  mobxLazy,
+}
