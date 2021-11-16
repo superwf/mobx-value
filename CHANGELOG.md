@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/superwf/mobx-value/compare/v1.0.0...v1.1.0) (2021-11-16)
+
+
+### Features
+
+* add short name alias ([88e4d5f](https://github.com/superwf/mobx-value/commit/88e4d5ff3c6832911d57f9a03a722642d4d7820a))
+
 ### [0.2.5](https://github.com/superwf/mobx-value/compare/v0.2.4...v0.2.5) (2021-09-27)
 
 
