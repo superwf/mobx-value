@@ -22,4 +22,17 @@ export type {
   MobxBooleanValue,
 }
 export { mobx, mobxReactLite, mobxSetter, mobxRequest, mobxBoolean, mobxLazy }
-export default { mobx, mobxReactLite, mobxSetter, mobxRequest, mobxBoolean, mobxLazy }
+export { mobxSetter as setter, mobxRequest as request, mobxBoolean as boolean, mobxLazy as lazy }
+export default {
+  mobx,
+  mobxReactLite,
+  mobxSetter,
+  mobxRequest,
+  mobxBoolean,
+  mobxLazy,
+
+  setter: mobxSetter,
+  request: mobxRequest,
+  boolean: mobxBoolean,
+  lazy: mobxLazy,
+}

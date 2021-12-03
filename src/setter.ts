@@ -1,21 +1,7 @@
-import type { AnnotationMapEntry } from 'mobx'
-import { action, makeObservable, observable, onBecomeUnobserved } from 'mobx'
+import { action, makeObservable, onBecomeUnobserved } from 'mobx'
 
-export interface MobxSetterOption<Data> {
-  value: Data
-
-  /**
-   * mobx `makeObservable` annotation option for `value`
-   * @default observable
-   * */
-  annotation?: Exclude<AnnotationMapEntry, false>
-
-  /**
-   * auto run restore when leave observer context
-   * @default false
-   * */
-  autoRestoreOnBecomeUnobserved?: boolean
-}
+import { assembleOption } from './assembleOption'
+import type { MobxSetterLegacyOption, PrimitiveType, StripPrimitive } from './type'
 
 export interface MobxSetterValue<Data> {
   value: Data
@@ -23,18 +9,18 @@ export interface MobxSetterValue<Data> {
   restore: () => void
 }
 
-export function mobxSetter<Data>({
-  value,
-  annotation = observable,
-  autoRestoreOnBecomeUnobserved = false,
-}: MobxSetterOption<Data>): MobxSetterValue<Data> {
+export function mobxSetter<Data extends PrimitiveType>(o: StripPrimitive<Data>): MobxSetterValue<StripPrimitive<Data>>
+export function mobxSetter<Data>(o: MobxSetterLegacyOption<Data>): MobxSetterValue<Data>
+
+export function mobxSetter<Data>(option: any): MobxSetterValue<Data> {
+  const { value, annotation, autoRestoreOnBecomeUnobserved } = assembleOption(option)
   const defaultValue = value
   const target = {
     value,
     restore() {
       target.value = defaultValue
     },
-    set(v: Data) {
+    set(v: any) {
       target.value = v
     },
   }

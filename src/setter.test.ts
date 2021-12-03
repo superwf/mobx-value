@@ -157,4 +157,24 @@ describe('setter', () => {
   it('short alias', () => {
     expect(setter).toBe(mobxSetter)
   })
+
+  describe.only('test primitive parameter', () => {
+    const m = setter(1)
+
+    it('test setter', () => {
+      expect(m.value).toBe(1)
+      const spy = jest.fn()
+      const dispose = autorun(() => {
+        if (m.value > 1) {
+          spy()
+        }
+      })
+      m.set(3)
+      expect(spy).toHaveBeenCalled()
+      expect(m.value).toBe(3)
+      m.restore()
+      expect(m.value).toBe(1)
+      dispose()
+    })
+  })
 })

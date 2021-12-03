@@ -1,11 +1,11 @@
 import { flow, makeObservable, observable, onBecomeUnobserved } from 'mobx'
 import type { CancellablePromise } from 'mobx/dist/api/flow'
 
-import type { MobxSetterOption, MobxSetterValue } from './setter'
+import type { MobxSetterValue } from './setter'
 import { mobxSetter } from './setter'
-import type { RequestFunction } from './type'
+import type { MobxSetterLegacyOption, RequestFunction } from './type'
 
-export interface MobxRequestOption<Data, Request extends RequestFunction> extends MobxSetterOption<Data> {
+export interface MobxRequestOption<Data, Request extends RequestFunction> extends MobxSetterLegacyOption<Data> {
   request: Request
 
   /**

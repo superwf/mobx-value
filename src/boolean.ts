@@ -1,9 +1,10 @@
 import { observable } from 'mobx'
 
-import type { MobxSetterOption, MobxSetterValue } from './setter'
+import type { MobxSetterValue } from './setter'
 import { mobxSetter } from './setter'
+import type { MobxSetterLegacyOption } from './type'
 
-export type MobxBooleanOption = Omit<MobxSetterOption<boolean>, 'value'> & {
+export type MobxBooleanOption = Omit<MobxSetterLegacyOption<boolean>, 'value'> & {
   value?: boolean
 }
 
