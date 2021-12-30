@@ -1,10 +1,10 @@
-type Option<Data extends any = any> = {
-  data: Data
+type Option = {
+  data: any
   delay: number
 }
 
 export const mockRequest =
-  <T>({ data, delay }: Option<T>) =>
+  <T>({ data, delay }: Option) =>
   (): Promise<T> =>
     new Promise(resolve => {
       setTimeout(() => resolve(data), delay)

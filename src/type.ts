@@ -1,8 +1,9 @@
 import type { AnnotationMapEntry } from 'mobx'
+import type { CancellablePromise } from 'mobx/dist/api/flow'
 
 export type RequestFunction = (...args: any[]) => Promise<any>
 
-export type MobxSetterLegacyOption<Data> = {
+export type MobxSetterStandardOption<Data> = {
   value: Data
 
   /**
@@ -18,7 +19,7 @@ export type MobxSetterLegacyOption<Data> = {
   autoRestoreOnBecomeUnobserved?: boolean
 }
 
-export type OptionValueType<T> = T extends MobxSetterLegacyOption<infer Data> ? Data : T
+export type OptionValueType<T> = T extends MobxSetterStandardOption<infer Data> ? Data : T
 
 export type PrimitiveType = string | number | symbol | boolean | null | undefined
 
@@ -34,18 +35,90 @@ export type StripPrimitive<T extends PrimitiveType> = T extends string
   ? null
   : undefined
 
-export type MobxSetterUnionOption<T extends any = any> = MobxSetterLegacyOption<T> | PrimitiveType
+export type MobxSetterUnionOption<T = any> = MobxSetterStandardOption<T> | PrimitiveType
 
-export type MobxSetterOption<T> = T extends MobxSetterLegacyOption<infer P>
-  ? MobxSetterLegacyOption<P>
+export type MobxSetterOption<T> = T extends MobxSetterStandardOption<infer P>
+  ? MobxSetterStandardOption<P>
   : T extends PrimitiveType
-  ? MobxSetterLegacyOption<StripPrimitive<T>>
+  ? MobxSetterStandardOption<StripPrimitive<T>>
   : never
 
-export type MobxSetterValue<T> = T extends MobxSetterLegacyOption<infer Data>
-  ? {
-      value: Data
-      set: (v: Data) => void
-      restore: () => void
-    }
+// export type MobxSetterValue<T> = T extends MobxSetterStandardOption<infer Data>
+//   ? {
+//       value: Data
+//       set: (v: Data) => void
+//       restore: () => void
+//     }
+//   : never
+export interface MobxSetterValue<Data> {
+  value: Data
+  set: (v: Data) => void
+  restore: () => void
+}
+
+export type StripValue<T> = T extends MobxSetterStandardOption<infer P>
+  ? P
+  : T extends PrimitiveType
+  ? StripPrimitive<T>
   : never
+
+export type MobxBooleanOption = Omit<MobxSetterStandardOption<boolean>, 'value'> & {
+  value?: boolean
+}
+
+export interface MobxBooleanValue extends MobxSetterValue<boolean> {
+  setTrue: () => void
+  setFalse: () => void
+  toggle: () => void
+}
+
+export interface MobxRequestOption<Data, Request extends RequestFunction>
+  extends Omit<MobxSetterStandardOption<Data>, 'value'> {
+  value?: Data
+  request: Request
+
+  /**
+   * default mobxRequest prevent next request when last request is loading
+   * set to true to allow next request when loading
+   * @default false
+   * */
+  parallel?: boolean
+
+  /**
+   * auto cancle request when not observed and loading is not complete
+   * @default false
+   * */
+  autoCancelOnBecomeUnobserved?: boolean
+}
+
+export interface MobxRequestValue<Data, Request extends RequestFunction> extends MobxSetterValue<Data> {
+  error: any
+  request: (...args: Parameters<Request>) => CancellablePromise<Data>
+  /** request again with last parameters */
+  refresh: () => CancellablePromise<Data>
+  cancel(): void
+  loading: boolean
+}
+
+export type MobxLazyOption<D, R extends RequestFunction> = MobxRequestOption<D, R>
+
+export interface MobxLazyValue<Data, Request extends RequestFunction> extends MobxRequestValue<Data, Request> {
+  /**
+   * status tag, do not modify it
+   * @readonly
+   */
+  requested: boolean
+  cancel(): void
+
+  /**
+   * last request ready promise
+   * when need some operate after this data is loaded
+   * use `await lazy.ready`
+   * * */
+  ready: Promise<Data>
+
+  /**
+   * restore and reset request to initial status
+   */
+  reset(): void
+}

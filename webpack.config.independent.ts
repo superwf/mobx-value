@@ -2,6 +2,7 @@ import * as path from 'path'
 
 import type { Configuration } from 'webpack'
 
+// eslint-disable-next-line import/extensions
 import baseConfig from './webpack.config'
 
 const resolveRoot = (relativePath: string) => path.resolve(__dirname, relativePath)
@@ -12,7 +13,7 @@ const config: Configuration = {
     main: resolveRoot('src/independent.ts'),
   },
   output: {
-    filename: 'independent.umd.js',
+    filename: 'independent.js',
     library: {
       type: 'var',
       name: 'mobxValue',

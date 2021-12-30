@@ -220,4 +220,9 @@ describe('requestProperty', () => {
   it('short alias', () => {
     expect(request).toBe(mobxRequest)
   })
+
+  it('no value', () => {
+    const user = mobxRequest({ request: mockFetch })
+    expect(user.loading).toBe(false)
+  })
 })

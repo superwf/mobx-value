@@ -1,30 +1,18 @@
 import { observable } from 'mobx'
 
 import { isPrimitive } from './isPrimitive'
-import type {
-  MobxSetterLegacyOption,
-  MobxSetterOption,
-  MobxSetterUnionOption,
-  PrimitiveType,
-  StripPrimitive,
-} from './type'
+import type { MobxSetterOption, MobxSetterUnionOption } from './type'
 
-export function assembleOption<Data extends PrimitiveType>(o: Data): MobxSetterLegacyOption<StripPrimitive<Data>>
-export function assembleOption<Data>(o: MobxSetterLegacyOption<Data>): MobxSetterLegacyOption<Data>
-
-export function assembleOption(v: any): MobxSetterLegacyOption<any> {
+export function assembleOption<O extends MobxSetterUnionOption>(v: O): MobxSetterOption<O> {
   if (isPrimitive(v)) {
     return {
       value: v,
       annotation: observable,
       autoRestoreOnBecomeUnobserved: false,
-    }
+    } as unknown as MobxSetterOption<O>
   }
   if (!('value' in v)) {
     throw new Error('setter parameter must be a primitive value, or as a `value` property')
   }
-  return v
+  return v as unknown as MobxSetterOption<O>
 }
-
-// const a = assembleOption('')
-// a.value.toString()

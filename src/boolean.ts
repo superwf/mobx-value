@@ -1,18 +1,7 @@
 import { observable } from 'mobx'
 
-import type { MobxSetterValue } from './setter'
 import { mobxSetter } from './setter'
-import type { MobxSetterLegacyOption } from './type'
-
-export type MobxBooleanOption = Omit<MobxSetterLegacyOption<boolean>, 'value'> & {
-  value?: boolean
-}
-
-export interface MobxBooleanValue extends MobxSetterValue<boolean> {
-  setTrue: () => void
-  setFalse: () => void
-  toggle: () => void
-}
+import type { MobxBooleanOption, MobxBooleanValue } from './type'
 
 /**
  * 生成MobxBooleanValue数据结构的变量

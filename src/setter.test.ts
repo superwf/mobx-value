@@ -158,10 +158,9 @@ describe('setter', () => {
     expect(setter).toBe(mobxSetter)
   })
 
-  describe.only('test primitive parameter', () => {
-    const m = setter(1)
-
-    it('test setter', () => {
+  describe('test primitive parameter', () => {
+    it('test setter number', () => {
+      const m = setter(1)
       expect(m.value).toBe(1)
       const spy = jest.fn()
       const dispose = autorun(() => {
@@ -174,6 +173,23 @@ describe('setter', () => {
       expect(m.value).toBe(3)
       m.restore()
       expect(m.value).toBe(1)
+      dispose()
+    })
+
+    it('test setter string', () => {
+      const m = setter('')
+      expect(m.value).toBe('')
+      const spy = jest.fn()
+      const dispose = autorun(() => {
+        if (m.value.length > 0) {
+          spy()
+        }
+      })
+      m.set('a')
+      expect(spy).toHaveBeenCalled()
+      expect(m.value).toBe('a')
+      m.restore()
+      expect(m.value).toBe('')
       dispose()
     })
   })

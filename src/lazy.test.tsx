@@ -198,21 +198,21 @@ describe('lazyProperty', () => {
       await sleep(20)
       return 'ok'
     }
-    const lazy = mobxLazy({ value: '', request: mockRequestLazy })
-    lazy.cancel()
-    expect(lazy.loading).toBe(false)
-    autorun(() => noop(lazy.value))
-    expect(lazy.loading).toBe(true)
-    expect(lazy.value).toBe('')
+    const lazyData = mobxLazy({ value: '', request: mockRequestLazy })
+    lazyData.cancel()
+    expect(lazyData.loading).toBe(false)
+    autorun(() => noop(lazyData.value))
+    expect(lazyData.loading).toBe(true)
+    expect(lazyData.value).toBe('')
     let isReady = false
-    lazy.ready
+    lazyData.ready
       .then(() => {
         isReady = true
       })
       .catch(noop)
-    lazy.cancel()
+    lazyData.cancel()
     await sleep(30)
-    expect(lazy.value).toBe('')
+    expect(lazyData.value).toBe('')
     expect(isReady).toBe(false)
   })
 

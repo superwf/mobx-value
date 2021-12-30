@@ -1,53 +1,31 @@
 import { flow, makeObservable, observable, onBecomeUnobserved } from 'mobx'
 import type { CancellablePromise } from 'mobx/dist/api/flow'
 
-import type { MobxSetterValue } from './setter'
 import { mobxSetter } from './setter'
-import type { MobxSetterLegacyOption, RequestFunction } from './type'
-
-export interface MobxRequestOption<Data, Request extends RequestFunction> extends MobxSetterLegacyOption<Data> {
-  request: Request
-
-  /**
-   * default mobxRequest prevent next request when last request is loading
-   * set to true to allow next request when loading
-   * @default false
-   * */
-  parallel?: boolean
-
-  /**
-   * auto cancle request when not observed and loading is not complete
-   * @default false
-   * */
-  autoCancelOnBecomeUnobserved?: boolean
-}
-
-export interface MobxRequestValue<Data, Request extends RequestFunction> extends MobxSetterValue<Data> {
-  error: any
-  request: (...args: Parameters<Request>) => CancellablePromise<Data>
-  /** request again with last parameters */
-  refresh: () => CancellablePromise<Data>
-  cancel(): void
-  loading: boolean
-}
+import type { MobxRequestOption, MobxRequestValue, RequestFunction } from './type'
 
 /**
  * generate a mobxRequest variable
  * */
-export function mobxRequest<TData, Request extends RequestFunction>({
-  value: defaultValue,
-  request: requestFunction,
-  annotation,
-  autoRestoreOnBecomeUnobserved = false,
-  autoCancelOnBecomeUnobserved = false,
-  parallel,
-}: MobxRequestOption<TData, Request>): MobxRequestValue<TData, Request> {
-  const setter = mobxSetter({
+export function mobxRequest<Data, Request extends RequestFunction>(
+  option: MobxRequestOption<Data, Request>,
+): MobxRequestValue<Data, Request> {
+  const {
     value: defaultValue,
+    request: requestFunction,
+    annotation,
+    autoRestoreOnBecomeUnobserved = false,
+    autoCancelOnBecomeUnobserved = false,
+    parallel,
+  } = option
+  const valueInOption = 'value' in option
+  const setter = mobxSetter({
+    value: valueInOption ? defaultValue : undefined,
     annotation,
     autoRestoreOnBecomeUnobserved,
   })
   type TParameters = Parameters<Request>
+  type TData = Data | undefined
 
   // store prev request Promise
   let lastRequest: CancellablePromise<TData> | null = null
@@ -59,7 +37,9 @@ export function mobxRequest<TData, Request extends RequestFunction>({
       target.loading = true
       try {
         const data = yield requestFunction(...args)
-        setter.set(data)
+        if (valueInOption) {
+          setter.set(data)
+        }
         return data
       } catch (e) {
         target.error = e
@@ -93,8 +73,11 @@ export function mobxRequest<TData, Request extends RequestFunction>({
     error: observable,
     loading: observable,
   })
-  if (autoCancelOnBecomeUnobserved) {
+  if (valueInOption && autoCancelOnBecomeUnobserved) {
     onBecomeUnobserved(target, 'value', target.cancel)
   }
-  return target
+  if (autoCancelOnBecomeUnobserved) {
+    onBecomeUnobserved(target, 'loading', target.cancel)
+  }
+  return target as any
 }

@@ -147,7 +147,7 @@ const config: Configuration = {
       overlay: false,
     }),
     new ProvidePlugin({
-      process: 'process/browser',
+      process: resolveRoot('node_modules/process/browser.js'),
     }),
   ],
   devtool: 'source-map',

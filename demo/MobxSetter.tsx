@@ -4,9 +4,7 @@ import type { FC } from 'react'
 
 import { mobxSetter } from '../src'
 
-const counter = mobxSetter({
-  value: 1,
-})
+const counter = mobxSetter(1)
 
 const plusCounter = () => counter.set(counter.value + 1)
 const minusCounter = () => counter.set(counter.value - 1)

@@ -1,31 +1,24 @@
-import { action, makeObservable, onBecomeUnobserved } from 'mobx'
+import { action, makeObservable, observable, onBecomeUnobserved } from 'mobx'
 
 import { assembleOption } from './assembleOption'
-import type { MobxSetterLegacyOption, PrimitiveType, StripPrimitive } from './type'
+import type { MobxSetterUnionOption, MobxSetterValue, StripValue } from './type'
 
-export interface MobxSetterValue<Data> {
-  value: Data
-  set: (v: Data) => void
-  restore: () => void
-}
-
-export function mobxSetter<Data extends PrimitiveType>(o: StripPrimitive<Data>): MobxSetterValue<StripPrimitive<Data>>
-export function mobxSetter<Data>(o: MobxSetterLegacyOption<Data>): MobxSetterValue<Data>
-
-export function mobxSetter<Data>(option: any): MobxSetterValue<Data> {
-  const { value, annotation, autoRestoreOnBecomeUnobserved } = assembleOption(option)
+export function mobxSetter<Data = StripValue<MobxSetterUnionOption>>(
+  option: MobxSetterUnionOption,
+): MobxSetterValue<Data> {
+  const { value, annotation, autoRestoreOnBecomeUnobserved } = assembleOption<MobxSetterUnionOption>(option)
   const defaultValue = value
   const target = {
-    value,
+    value: value as Data,
     restore() {
       target.value = defaultValue
     },
-    set(v: any) {
+    set(v: Data) {
       target.value = v
     },
   }
   makeObservable(target, {
-    value: annotation,
+    value: annotation || observable,
     restore: action,
     set: action,
   })
