@@ -21,7 +21,7 @@ export type MobxSetterStandardOption<Data> = {
 
 export type OptionValueType<T> = T extends MobxSetterStandardOption<infer Data> ? Data : T
 
-export type PrimitiveType = string | number | symbol | boolean | null | undefined
+export type PrimitiveType = string | number | symbol | boolean | null | undefined | bigint
 
 export type StripPrimitive<T extends PrimitiveType> = T extends string
   ? string
