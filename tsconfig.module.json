@@ -9,6 +9,6 @@
   "include": [],
   "files": [
     "src/index.ts",
-    "src/independent.ts"
+    "src/standalone.ts"
   ]
 }

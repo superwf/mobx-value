@@ -31,7 +31,7 @@
     "start": "NODE_ENV=development webpack serve -c webpack.config.demo.ts",
     "clean": "rimraf {module,dist,lib,type} -f",
     "badge": "jest-coverage-badges output ./badge",
-    "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.module.json && tsc -p tsconfig.declaration.json && NODE_ENV=production webpack && NODE_ENV=production webpack -c webpack.config.independent.ts && cp type/* module/ && cp type/* dist/ && cp type/* lib/",
+    "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.module.json && tsc -p tsconfig.declaration.json && NODE_ENV=production webpack && NODE_ENV=production webpack -c webpack.config.standalone.ts && cp type/* module/ && cp type/* dist/ && cp type/* lib/",
     "prepublishOnly": "yarn test && yarn build && standard-version",
     "prepare": "husky install",
     "publish-rc": "yarn test && yarn build && yarn standard-version -- prerelease rc && npm publish --ignore-scripts"

@@ -10,10 +10,10 @@ const resolveRoot = (relativePath: string) => path.resolve(__dirname, relativePa
 const config: Configuration = {
   ...baseConfig,
   entry: {
-    main: resolveRoot('src/independent.ts'),
+    main: resolveRoot('src/standalone.ts'),
   },
   output: {
-    filename: 'independent.js',
+    filename: 'standalone.js',
     library: {
       type: 'var',
       name: 'mobxValue',
