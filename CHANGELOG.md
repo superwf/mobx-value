@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/superwf/mobx-value/compare/v1.1.1...v1.2.0) (2022-04-11)
+
+
+### Features
+
+* request value not required ([5728260](https://github.com/superwf/mobx-value/commit/57282602459ca1730f3483143be5f5fb002bce21))
+* update support primitive setter parameter ([48ba387](https://github.com/superwf/mobx-value/commit/48ba38740ae3435029585f3a82210b6b246fefe4))
+
+
+### Bug Fixes
+
+* add bigint to primitive type ([24f5ffb](https://github.com/superwf/mobx-value/commit/24f5ffba2c4b64ec727db7cbb253cdebf85aaac3))
+
 ### [1.1.1](https://github.com/superwf/mobx-value/compare/v1.1.0...v1.1.1) (2021-11-16)
 
 ## [1.1.0](https://github.com/superwf/mobx-value/compare/v1.0.0...v1.1.0) (2021-11-16)
