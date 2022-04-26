@@ -5,9 +5,9 @@ import * as React from 'react'
 import { mockRequest } from './mockRequest'
 import type { User } from './type'
 
-import { mobxLazy } from '../src'
+import { lazy } from '../src'
 
-const userLazyRequest = mobxLazy({
+const userLazyRequest = lazy({
   value: { name: '' } as User,
   request: mockRequest({
     data: { name: 'Tim' },

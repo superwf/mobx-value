@@ -2,9 +2,9 @@ import { Button, Card, Row } from 'antd'
 import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
 
-import { mobxSetter } from '../src'
+import { setter } from '../src'
 
-const counter = mobxSetter({
+const counter = setter({
   value: 1,
   autoRestoreOnBecomeUnobserved: true,
 })

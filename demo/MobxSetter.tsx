@@ -2,9 +2,9 @@ import { Button, Card, Row } from 'antd'
 import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
 
-import { mobxSetter } from '../src'
+import { setter } from '../src'
 
-const counter = mobxSetter(1)
+const counter = setter(1)
 
 const plusCounter = () => counter.set(counter.value + 1)
 const minusCounter = () => counter.set(counter.value - 1)

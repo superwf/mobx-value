@@ -1,14 +1,14 @@
 import { Button, Card, Row } from 'antd'
 import * as React from 'react'
 
-import { mobxRequest } from '../src'
+import { request } from '../src'
 import { sleep } from '../src/sleep'
 
 type User = {
   name: string
 }
 
-const userRequest = mobxRequest({
+const userRequest = request({
   value: { name: '' } as User,
   parallel: true,
   request: async () => {

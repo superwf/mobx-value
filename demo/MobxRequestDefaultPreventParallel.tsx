@@ -4,10 +4,10 @@ import * as React from 'react'
 
 import type { User } from './type'
 
-import { mobxRequest } from '../src'
+import { request } from '../src'
 import { sleep } from '../src/sleep'
 
-const userRequest = mobxRequest({
+const userRequest = request({
   value: { name: '' } as User,
   request: async () => {
     await sleep(1000)

@@ -2,7 +2,8 @@ import { Layout } from 'antd'
 import { observer } from 'mobx-react-lite'
 import raw from 'raw.macro'
 import type { FC } from 'react'
-import { Route, Router, Switch } from 'react-router-dom'
+import * as React from 'react'
+import { Route, Router, Routes } from 'react-router-dom'
 
 import { Sider } from './Sider'
 
@@ -35,69 +36,71 @@ const multipleInstanceCode = raw('../MultipleInstance.tsx')
 
 const { Content } = Layout
 
-export const App: FC = observer(() => (
-  <Router history={router.history}>
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider />
-      <Layout>
-        <Content>
-          <Switch location={router.location}>
-            <Route path="/api" component={Home} />
-            <Route
-              path="/mobxSetter"
-              component={() => <RenderWithSourceCode code={setterCode} Component={MobxSetter} />}
-            />
-            <Route
-              path="/mobxSetterAutoRestore"
-              component={() => <RenderWithSourceCode code={setterAutoRestoreCode} Component={MobxSetterAutoRestore} />}
-            />
-            <Route
-              path="/mobxBoolean"
-              component={() => <RenderWithSourceCode code={booleanCode} Component={MobxBoolean} />}
-            />
-            <Route
-              path="/mobxBooleanAutoRestore"
-              component={() => (
-                <RenderWithSourceCode code={booleanAutoRestoreCode} Component={MobxBooleanAutoRestore} />
-              )}
-            />
-            <Route
-              path="/mobxRequest"
-              component={() => <RenderWithSourceCode code={requestCode} Component={MobxRequest} />}
-            />
-            <Route
-              path="/mobxRequestAutoRestore"
-              component={() => (
-                <RenderWithSourceCode code={requestAutoRestoreCode} Component={MobxRequestAutoRestore} />
-              )}
-            />
-            <Route
-              path="/mobxRequestDefaultPreventParallel"
-              component={() => (
-                <RenderWithSourceCode
-                  code={requestDefaultPreventParallelCode}
-                  Component={MobxRequestDefaultPreventParallel}
-                />
-              )}
-            />
-            <Route
-              path="/mobxRequestAllowParallel"
-              component={() => (
-                <RenderWithSourceCode code={requestAllowParallelCode} Component={MobxRequestAllowParallel} />
-              )}
-            />
-            <Route
-              path="/mobxRequestAutoCancel"
-              component={() => <RenderWithSourceCode code={requestAutoCancelCode} Component={MobxRequestAutoCancel} />}
-            />
-            <Route path="/mobxLazy" component={() => <RenderWithSourceCode code={lazyCode} Component={MobxLazy} />} />
-            <Route
-              path="/multipleInstance"
-              component={() => <RenderWithSourceCode code={multipleInstanceCode} Component={MultipleInstance} />}
-            />
-          </Switch>
-        </Content>
+export const App: FC = observer(() => {
+  const [state, setState] = React.useState({
+    action: router.history.action,
+    location: router.history.location,
+  })
+  React.useLayoutEffect(() => {
+    router.history.listen(({ action, location }) => {
+      setState({ action, location })
+    })
+  }, [])
+  return (
+    <Router navigator={router.history} location={state.location} navigationType={state.action}>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider />
+        <Layout>
+          <Content>
+            <Routes>
+              <Route path="/api" element={<Home />} />
+              <Route path="/mobxSetter" element={<RenderWithSourceCode code={setterCode} Component={MobxSetter} />} />
+              <Route
+                path="/mobxSetterAutoRestore"
+                element={<RenderWithSourceCode code={setterAutoRestoreCode} Component={MobxSetterAutoRestore} />}
+              />
+              <Route
+                path="/mobxBoolean"
+                element={<RenderWithSourceCode code={booleanCode} Component={MobxBoolean} />}
+              />
+              <Route
+                path="/mobxBooleanAutoRestore"
+                element={<RenderWithSourceCode code={booleanAutoRestoreCode} Component={MobxBooleanAutoRestore} />}
+              />
+              <Route
+                path="/mobxRequest"
+                element={<RenderWithSourceCode code={requestCode} Component={MobxRequest} />}
+              />
+              <Route
+                path="/mobxRequestAutoRestore"
+                element={<RenderWithSourceCode code={requestAutoRestoreCode} Component={MobxRequestAutoRestore} />}
+              />
+              <Route
+                path="/mobxRequestDefaultPreventParallel"
+                element={
+                  <RenderWithSourceCode
+                    code={requestDefaultPreventParallelCode}
+                    Component={MobxRequestDefaultPreventParallel}
+                  />
+                }
+              />
+              <Route
+                path="/mobxRequestAllowParallel"
+                element={<RenderWithSourceCode code={requestAllowParallelCode} Component={MobxRequestAllowParallel} />}
+              />
+              <Route
+                path="/mobxRequestAutoCancel"
+                element={<RenderWithSourceCode code={requestAutoCancelCode} Component={MobxRequestAutoCancel} />}
+              />
+              <Route path="/mobxLazy" element={<RenderWithSourceCode code={lazyCode} Component={MobxLazy} />} />
+              <Route
+                path="/multipleInstance"
+                element={<RenderWithSourceCode code={multipleInstanceCode} Component={MultipleInstance} />}
+              />
+            </Routes>
+          </Content>
+        </Layout>
       </Layout>
-    </Layout>
-  </Router>
-))
+    </Router>
+  )
+})

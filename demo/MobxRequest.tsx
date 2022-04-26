@@ -5,9 +5,9 @@ import * as React from 'react'
 import { mockRequest } from './mockRequest'
 import type { User } from './type'
 
-import { mobxRequest } from '../src'
+import { request } from '../src'
 
-const userRequest = mobxRequest({
+const userRequest = request({
   value: { name: '' } as User,
   request: mockRequest({
     data: { name: 'Tim' },

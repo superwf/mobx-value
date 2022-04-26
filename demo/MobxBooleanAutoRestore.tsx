@@ -2,9 +2,9 @@ import { Button, Card, Popover, Row } from 'antd'
 import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
 
-import { mobxBoolean } from '../src'
+import { boolean } from '../src'
 
-const visible = mobxBoolean({
+const visible = boolean({
   value: false,
   autoRestoreOnBecomeUnobserved: true,
 })

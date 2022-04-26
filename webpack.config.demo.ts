@@ -20,6 +20,7 @@ const externals: Record<string, string> = {
   moment: 'moment',
   history: 'HistoryLibrary',
   'mobx-react-lite': 'mobxReactLite',
+  'react-router': 'ReactRouter',
   'react-router-dom': 'ReactRouterDOM',
 }
 
@@ -47,8 +48,12 @@ const packages: ConstructorParameters<typeof HtmlWebpackInjectExternalsPlugin>[0
     path: '/umd/react-dom.development.js',
   },
   {
+    name: 'react-router',
+    path: '/umd/react-router.production.min.js',
+  },
+  {
     name: 'react-router-dom',
-    path: '/umd/react-router-dom.min.js',
+    path: '/umd/react-router-dom.production.min.js',
   },
   {
     name: 'mobx',

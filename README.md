@@ -24,7 +24,7 @@ If you feel redux(or other libs similar to redux) is reduant, and have strong ne
 
 By `mobx-value`, just create a data by `setter`(or request or boolean or lazy), use it in a component, wrap the component with `observer` from `mobx-react-lite`, it works.
 
-Note: `mobx-value `Work with `Mobx` > 6.0.0.
+Note: `mobx-value` only works with `Mobx` > 6.0.0.
 
 ![Statements](https://raw.githubusercontent.com/superwf/mobx-value/master/badge/badge-statements.svg)
 

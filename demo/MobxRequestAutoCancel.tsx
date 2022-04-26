@@ -2,14 +2,14 @@ import { Button, Card, Row, Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import * as React from 'react'
 
-import { mobxRequest } from '../src'
+import { request } from '../src'
 import { sleep } from '../src/sleep'
 
 type User = {
   name: string
 }
 
-const userRequest = mobxRequest({
+const userRequest = request({
   value: { name: '' } as User,
   autoCancelOnBecomeUnobserved: true,
   request: async () => {
