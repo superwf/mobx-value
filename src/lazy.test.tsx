@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
 import { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
@@ -15,7 +15,7 @@ describe('lazyProperty', () => {
     }),
   )
 
-  let user = mobxLazy({ value: { name: '' }, request: mockRequest })
+  let user = lazy({ value: { name: '' }, request: mockRequest })
 
   beforeEach(() => {
     mockRequest = jest.fn(() =>
@@ -23,7 +23,7 @@ describe('lazyProperty', () => {
         name: 'abc',
       }),
     )
-    user = mobxLazy({ value: { name: '' }, request: mockRequest })
+    user = lazy({ value: { name: '' }, request: mockRequest })
   })
 
   it('test lazy init value', () => {
@@ -110,7 +110,7 @@ describe('lazyProperty', () => {
 
   it('two lazy property should all work', async () => {
     const spy = jest.fn(() => Promise.resolve({ name: 'def' }))
-    const user1 = mobxLazy({ value: { name: '' }, request: spy })
+    const user1 = lazy({ value: { name: '' }, request: spy })
     const dispose = autorun(() => {
       if (user.requested && !user.loading) {
         expect(user.value).toEqual({ name: 'abc' })
@@ -132,7 +132,7 @@ describe('lazyProperty', () => {
   })
 
   it('catch when request occurs error', async () => {
-    const errorUser = mobxLazy({
+    const errorUser = lazy({
       value: { name: '' },
       request: () => Promise.reject(new Error('fetch error')),
     })
@@ -163,7 +163,7 @@ describe('lazyProperty', () => {
       return resolveValue
     }
 
-    const callTime = mobxLazy({ value: '', request: mockRequestLazy })
+    const callTime = lazy({ value: '', request: mockRequestLazy })
     const dispose = autorun(() => {
       noop(callTime.value)
     })
@@ -176,7 +176,7 @@ describe('lazyProperty', () => {
 
   describe('use shallow for annotation', () => {
     it('指定shallow', () => {
-      const notRecursiveUser = mobxLazy({
+      const notRecursiveUser = lazy({
         value: { box: [1, 2, 3] },
         request: () => Promise.resolve({ box: [4, 5, 6] }),
         annotation: observable.shallow,
@@ -185,7 +185,7 @@ describe('lazyProperty', () => {
     })
 
     it('default observable', () => {
-      const notRecursiveUser = mobxLazy({
+      const notRecursiveUser = lazy({
         value: { box: [1, 2, 3] },
         request: () => Promise.resolve({ box: [4, 5, 6] }),
       })
@@ -198,7 +198,7 @@ describe('lazyProperty', () => {
       await sleep(20)
       return 'ok'
     }
-    const lazyData = mobxLazy({ value: '', request: mockRequestLazy })
+    const lazyData = lazy({ value: '', request: mockRequestLazy })
     lazyData.cancel()
     expect(lazyData.loading).toBe(false)
     autorun(() => noop(lazyData.value))
@@ -217,17 +217,20 @@ describe('lazyProperty', () => {
   })
 
   describe('work in react', () => {
-    const user1 = mobxLazy({ value: { name: '' }, request: mockRequest, autoRestoreOnBecomeUnobserved: true })
-
-    const Comp: FC = observer(() => {
-      if (user1.value.name) {
-        return <b id="content">has a name</b>
-      }
-      return <b id="content">no name</b>
-    })
     it('mount component', async () => {
+      const user1 = lazy({ value: { name: '' }, request: mockRequest, autoRestoreOnBecomeUnobserved: true })
+
+      const Comp: FC = observer(() => {
+        if (user1.value.name) {
+          return <b id="content">has a name</b>
+        }
+        return <b id="content">no name</b>
+      })
       const app = render(<Comp />)
-      const node = await app.findByText('no name')
+      await act(async () => {
+        await user1.ready
+      })
+      const node = await app.findByText('has a name')
       expect(node.textContent).toBe('has a name')
       expect(user1.value.name).toBe('abc')
       app.unmount()
@@ -236,6 +239,14 @@ describe('lazyProperty', () => {
     })
 
     it('set auto restore when not observed', async () => {
+      const user1 = lazy({ value: { name: '' }, request: mockRequest, autoRestoreOnBecomeUnobserved: true })
+
+      const Comp: FC = observer(() => {
+        if (user1.value.name) {
+          return <b id="content">has a name</b>
+        }
+        return <b id="content">no name</b>
+      })
       const mockOnObserved = jest.fn()
       const mockOnUnobserved = jest.fn()
       const stop1 = onBecomeObserved(user1, 'value', mockOnObserved)

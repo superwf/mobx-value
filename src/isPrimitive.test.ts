@@ -24,6 +24,7 @@ describe('isPrimitive', () => {
     /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     expect(isPrimitive(() => {})).toBe(false)
     expect(isPrimitive(/x/)).toBe(false)
+    // eslint-disable-next-line prefer-regex-literals
     expect(isPrimitive(new RegExp(/x/))).toBe(false)
   })
 })

@@ -31,7 +31,7 @@ export const SyntaxHighlighter: React.FC<Props> = observer(({ code, lang }) => {
   const loading = React.useMemo(() => mobxBoolean({ value: true }), [])
   React.useEffect(() => {
     getHighlighter().then(highlighter => {
-      const highlighted = highlighter.codeToHtml(code, lang)
+      const highlighted = highlighter.codeToHtml(code, { lang })
       setHighlightedCode(highlighted)
       loading.setFalse()
     })
