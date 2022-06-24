@@ -14,6 +14,7 @@ The most outstanding of `mobx-value` is, you do not have to create much structur
     - [Lazy](#lazy)
   - [Example](#example)
     - [Work with React](#work-with-react)
+    - [Hooks](#hooks)
   - [CDN](#cdn)
   - [Build doc](#build-doc)
   - [TODO](#todo)
@@ -350,6 +351,31 @@ export const Example: FC = observer(() => (
 
 render(<Example />, document.querySelector('#app'))
 ```
+
+### Hooks
+
+Use `useMobxValue` instead wrap component with `observer`.
+
+```typescript
+import type { FC } from 'react'
+import { render } from 'react-dom'
+import { setter, useMobxValue } from 'mobx-value'
+
+const counter = setter({
+  value: 1,
+})
+
+export const Example: FC = () => {
+  const n = useMobxValue(counter)
+  return <div>
+    Counter: {n}
+    <button type="primary" onClick={() => counter.set(counter.value + 1)}>
+      Counter ++
+    </button>
+  </div>
+}
+
+render(<Example />, document.querySelector('#app'))
 
 ## CDN
 

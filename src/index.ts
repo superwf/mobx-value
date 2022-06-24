@@ -13,6 +13,7 @@ export type {
   MobxSetterOption,
   MobxSetterValue,
 } from './type'
+export { useMobxValue } from './hook'
 export { mobxSetter, mobxRequest, mobxBoolean, mobxLazy }
 export { mobxSetter as setter, mobxRequest as request, mobxBoolean as boolean, mobxLazy as lazy }
 export default {
