@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/superwf/mobx-value/compare/v1.2.1...v1.3.0) (2022-07-26)
+
+
+### Features
+
+* hook ([9bd781d](https://github.com/superwf/mobx-value/commit/9bd781d5bb599c96c15507af891458fdb8c9d0bf))
+
+
+### Bug Fixes
+
+* setter type reflection ([b62273f](https://github.com/superwf/mobx-value/commit/b62273f9acc0ac1ad990cc4a4e0b7051dfc4415d))
+
 ### [1.2.1](https://github.com/superwf/mobx-value/compare/v1.2.0...v1.2.1) (2022-04-26)
 
 ## [1.2.0](https://github.com/superwf/mobx-value/compare/v1.1.1...v1.2.0) (2022-04-11)
