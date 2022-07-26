@@ -1,13 +1,9 @@
 import { action, makeObservable, observable, onBecomeUnobserved } from 'mobx'
 
 import { assembleOption } from './assembleOption'
-import type { MobxSetterStandardOption, MobxSetterValue, PrimitiveType } from './type'
+import type { MobxSetterOption, MobxSetterValue } from './type'
 
-// export function mobxSetter<Data extends PrimitiveType>(option: Data): MobxSetterValue<Data>
-export function mobxSetter<
-  T,
-  Data = T extends PrimitiveType ? T : T extends MobxSetterStandardOption<infer D> ? D : never,
->(option: T): MobxSetterValue<Data> {
+export function mobxSetter<Data, Option = any>(option: MobxSetterOption<Data, Option>): MobxSetterValue<Data> {
   const { value, annotation, autoRestoreOnBecomeUnobserved } = assembleOption(option)
   const defaultValue = value as Data
   const target = {

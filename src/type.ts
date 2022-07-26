@@ -37,19 +37,12 @@ export type StripPrimitive<T extends PrimitiveType> = T extends string
 
 export type MobxSetterUnionOption<T> = MobxSetterStandardOption<T> | PrimitiveType
 
-export type MobxSetterOption<T> = T extends MobxSetterStandardOption<infer P>
-  ? MobxSetterStandardOption<P>
-  : T extends PrimitiveType
-  ? MobxSetterStandardOption<StripPrimitive<T>>
+export type MobxSetterOption<Data, Option> = Option extends PrimitiveType
+  ? Data
+  : Option extends MobxSetterStandardOption<Data>
+  ? MobxSetterStandardOption<Data>
   : never
 
-// export type MobxSetterValue<T> = T extends MobxSetterStandardOption<infer Data>
-//   ? {
-//       value: Data
-//       set: (v: Data) => void
-//       restore: () => void
-//     }
-//   : never
 export interface MobxSetterValue<Data> {
   value: Data
   set: (v: Data) => void
