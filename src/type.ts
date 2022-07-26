@@ -35,7 +35,7 @@ export type StripPrimitive<T extends PrimitiveType> = T extends string
   ? null
   : undefined
 
-export type MobxSetterUnionOption<T = any> = MobxSetterStandardOption<T> | PrimitiveType
+export type MobxSetterUnionOption<T> = MobxSetterStandardOption<T> | PrimitiveType
 
 export type MobxSetterOption<T> = T extends MobxSetterStandardOption<infer P>
   ? MobxSetterStandardOption<P>
