@@ -3,9 +3,9 @@ import * as path from 'path'
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import { HtmlWebpackInjectExternalsPlugin } from 'html-webpack-inject-externals-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import open from 'open'
 import { ProvidePlugin } from 'webpack'
 import type { Configuration } from 'webpack'
+import 'webpack-dev-server'
 
 const resolveRoot = (relativePath: string) => path.resolve(__dirname, relativePath)
 
@@ -85,18 +85,12 @@ const config: Configuration = {
   devServer: {
     historyApiFallback: true,
     host: '0.0.0.0',
-    inline: true,
     hot: true,
-    hotOnly: true,
     compress: true,
-    clientLogLevel: 'none',
-    injectClient: true,
-    quiet: false,
-    disableHostCheck: true,
     port,
-    contentBase: './public',
+    static: './public',
     https: false,
-    after: () => open(`http://127.0.0.1:${port}/mobxSetter`),
+    open: `http://127.0.0.1:${port}/mobxSetter`,
   },
   externals,
   resolve: {
