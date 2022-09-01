@@ -4,6 +4,9 @@
     "noEmit": false,
     "outDir": "lib"
   },
-  "files": ["src/index.ts"],
+  "files": [
+    "src/index.ts",
+    "src/standalone.ts"
+  ],
   "include": []
 }
