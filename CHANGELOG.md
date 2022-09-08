@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/superwf/mobx-value/compare/v1.3.2...v1.4.0) (2022-09-08)
+
+
+### Features
+
+* configureMobx to set mobx instance ([7d5f577](https://github.com/superwf/mobx-value/commit/7d5f577cc6988ca800317bdf8af19c1bed13b6f7))
+
 ### [1.3.2](https://github.com/superwf/mobx-value/compare/v1.3.1...v1.3.2) (2022-09-01)
 
 
