@@ -1,7 +1,10 @@
-import { observable } from 'mobx'
-
+import mobx from './mobx'
 import { mobxSetter } from './setter'
 import type { MobxBooleanOption, MobxBooleanValue } from './type'
+
+const {
+  mobx: { observable },
+} = mobx
 
 /**
  * 生成MobxBooleanValue数据结构的变量

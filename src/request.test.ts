@@ -1,11 +1,19 @@
 import { noop } from 'lodash'
-import { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved } from 'mobx'
+import * as mobx60 from 'mobx60'
 
+import mobx, { configureMobx } from './mobx'
 import { sleep } from './sleep'
 
 import { mobxRequest, request } from '.'
 
+const {
+  mobx: { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved },
+} = mobx
+
 describe('requestProperty', () => {
+  if (process.env.MOBX60) {
+    configureMobx(mobx60)
+  }
   const mockFetch = jest.fn(
     (param?: {
       path: { id: number }
@@ -188,7 +196,12 @@ describe('requestProperty', () => {
   })
 
   it('set auto cancel when not observed', async () => {
-    const mock = jest.fn(() => new Promise(resolve => setTimeout(() => resolve('aaa'), 10)))
+    const mock = jest.fn(
+      () =>
+        new Promise(resolve => {
+          setTimeout(() => resolve('aaa'), 10)
+        }),
+    )
     const name = mobxRequest({ value: '', request: mock, parallel: true, autoCancelOnBecomeUnobserved: true })
     const mockOnObserved = jest.fn()
     const mockOnUnobserved = jest.fn()

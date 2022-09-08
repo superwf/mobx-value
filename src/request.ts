@@ -1,8 +1,12 @@
-import { flow, makeObservable, observable, onBecomeUnobserved } from 'mobx'
 import type { CancellablePromise } from 'mobx/dist/api/flow'
 
+import mobx from './mobx'
 import { mobxSetter } from './setter'
 import type { MobxRequestOption, MobxRequestValue, RequestFunction } from './type'
+
+const {
+  mobx: { flow, makeObservable, observable, onBecomeUnobserved },
+} = mobx
 
 /**
  * generate a mobxRequest variable

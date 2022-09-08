@@ -1,8 +1,18 @@
-import { autorun, observe } from 'mobx'
+import * as mobx60 from 'mobx60'
+
+import mobx, { configureMobx } from './mobx'
 
 import { boolean, mobxBoolean } from '.'
 
+const {
+  mobx: { autorun, observe },
+} = mobx
+
 describe('mobxBoolean', () => {
+  if (process.env.MOBX60) {
+    configureMobx(mobx60)
+  }
+
   const a = mobxBoolean()
   it('default false', () => {
     expect(a.value).toBe(false)

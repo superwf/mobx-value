@@ -1,9 +1,13 @@
-import { onBecomeObserved } from 'mobx'
 import type { CancellablePromise } from 'mobx/dist/api/flow'
 
+import mobx from './mobx'
 import { noop } from './noop'
 import { mobxRequest } from './request'
 import type { MobxLazyOption, MobxLazyValue, RequestFunction } from './type'
+
+const {
+  mobx: { onBecomeObserved },
+} = mobx
 
 /**
  * generate a MobxLazyValue variable

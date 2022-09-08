@@ -1,10 +1,19 @@
 /* eslint-disable max-classes-per-file */
-import { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved, runInAction } from 'mobx'
+import * as mobx60 from 'mobx60'
+
+import mobx, { configureMobx } from './mobx'
 
 import { mobxSetter, setter } from '.'
 
+const {
+  mobx: { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved, runInAction },
+} = mobx
+
 describe('setter', () => {
   const n = mobxSetter({ value: 1 })
+  if (process.env.MOBX60) {
+    configureMobx(mobx60)
+  }
 
   it('test setter', () => {
     expect(n.value).toBe(1)

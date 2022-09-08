@@ -27,7 +27,9 @@
     "reactjs"
   ],
   "scripts": {
-    "test": "jest",
+    "test-default": "jest",
+    "test-mobx60": "MOBX60=true jest",
+    "test": "yarn test-default && yarn test-mobx60",
     "start": "NODE_ENV=development webpack serve -c webpack.config.demo.ts",
     "clean": "rimraf {module,dist,lib,type} -f",
     "badge": "jest-coverage-badges output ./badge",
@@ -85,6 +87,7 @@
     "markdownlint": "^0.23.1",
     "markdownlint-cli": "^0.27.1",
     "mobx-react-lite": "^3.3.0",
+    "mobx60": "npm:mobx@6.0.0",
     "path-to-regexp": "^6.2.0",
     "postcss": "^8.4.12",
     "postcss-loader": "^6.2.1",
@@ -114,6 +117,6 @@
     "registry": "https://registry.npmjs.org"
   },
   "dependencies": {
-    "mobx": ">=6.0.0"
+    "mobx": "^6.6.2"
   }
 }

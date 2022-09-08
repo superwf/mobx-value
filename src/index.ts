@@ -1,5 +1,6 @@
 import { mobxBoolean } from './boolean'
 import { mobxLazy } from './lazy'
+import { configureMobx } from './mobx'
 import { mobxRequest } from './request'
 import { mobxSetter } from './setter'
 
@@ -15,7 +16,7 @@ export type {
 } from './type'
 export { useMobxValue } from './hook'
 export { mobxSetter, mobxRequest, mobxBoolean, mobxLazy }
-export { mobxSetter as setter, mobxRequest as request, mobxBoolean as boolean, mobxLazy as lazy }
+export { mobxSetter as setter, mobxRequest as request, mobxBoolean as boolean, mobxLazy as lazy, configureMobx }
 export default {
   setter: mobxSetter,
   mobxSetter,
@@ -25,4 +26,5 @@ export default {
   mobxBoolean,
   lazy: mobxLazy,
   mobxLazy,
+  configureMobx,
 }
