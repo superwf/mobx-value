@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/superwf/mobx-value/compare/v1.4.0...v1.4.1) (2022-09-09)
+
+
+### Bug Fixes
+
+* configureMobx observable ([7046e4c](https://github.com/superwf/mobx-value/commit/7046e4c87810a91f5ac002a119b7ba804298c27c))
+
 ## [1.4.0](https://github.com/superwf/mobx-value/compare/v1.3.2...v1.4.0) (2022-09-08)
 
 
