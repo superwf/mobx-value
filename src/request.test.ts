@@ -1,7 +1,6 @@
 import { noop } from 'lodash'
-import * as mobx60 from 'mobx60'
 
-import mobx, { configureMobx } from './mobx'
+import mobx from './mobx'
 import { sleep } from './sleep'
 
 import { mobxRequest, request } from '.'
@@ -11,9 +10,6 @@ const {
 } = mobx
 
 describe('requestProperty', () => {
-  if (process.env.MOBX60) {
-    configureMobx(mobx60)
-  }
   const mockFetch = jest.fn(
     (param?: {
       path: { id: number }

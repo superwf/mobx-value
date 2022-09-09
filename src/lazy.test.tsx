@@ -1,9 +1,8 @@
 import { act, render } from '@testing-library/react'
 import { observer } from 'mobx-react-lite'
-import * as mobx60 from 'mobx60'
 import type { FC } from 'react'
 
-import mobx, { configureMobx } from './mobx'
+import mobx from './mobx'
 import { noop } from './noop'
 import { sleep } from './sleep'
 
@@ -14,9 +13,6 @@ const {
 } = mobx
 
 describe('lazyProperty', () => {
-  if (process.env.MOBX60) {
-    configureMobx(mobx60)
-  }
   let mockRequest = jest.fn(() =>
     Promise.resolve({
       name: 'abc',
