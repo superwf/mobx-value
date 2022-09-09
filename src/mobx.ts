@@ -1,13 +1,11 @@
 import * as defaultMobx from 'mobx'
 
-const mobx = {
-  mobx: defaultMobx,
-}
+let mobx = defaultMobx
 
-export default mobx
+export const getMobx = () => mobx
 
-export const configureMobx = (m?: any): void => {
+export const setMobx = (m?: any): void => {
   if (m) {
-    mobx.mobx = m
+    mobx = m
   }
 }

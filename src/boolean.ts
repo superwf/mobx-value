@@ -1,10 +1,6 @@
-import mobx from './mobx'
+import { getMobx } from './mobx'
 import { mobxSetter } from './setter'
 import type { MobxBooleanOption, MobxBooleanValue } from './type'
-
-const {
-  mobx: { observable },
-} = mobx
 
 /**
  * 生成MobxBooleanValue数据结构的变量
@@ -12,6 +8,7 @@ const {
 export function mobxBoolean(
   { value = false, autoRestoreOnBecomeUnobserved = false }: MobxBooleanOption = { value: false },
 ): MobxBooleanValue {
+  const { observable } = getMobx()
   const setter = mobxSetter({ value, autoRestoreOnBecomeUnobserved, annotation: observable })
   const booleanValue: MobxBooleanValue = Object.assign(setter, {
     setTrue() {

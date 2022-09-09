@@ -3,12 +3,12 @@ import { configure } from 'mobx'
 import * as mobx60 from 'mobx60'
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
 import React from 'react'
-import { configureMobx } from '../src/mobx'
+import { setMobx } from '../src/mobx'
 
 configure({ enforceActions: 'always' })
 
 if (process.env.MOBX60) {
-  configureMobx(mobx60)
+  setMobx(mobx60)
 }
 
 global.React = React

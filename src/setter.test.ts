@@ -1,13 +1,11 @@
 /* eslint-disable max-classes-per-file */
-import mobx from './mobx'
+import { getMobx } from './mobx'
 
 import { mobxSetter, setter } from '.'
 
-const {
-  mobx: { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved, runInAction },
-} = mobx
-
 describe('setter', () => {
+  const { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved, runInAction } = getMobx()
+
   const n = mobxSetter({ value: 1 })
 
   it('test setter', () => {

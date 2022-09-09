@@ -1,10 +1,9 @@
 import { isPrimitive } from './isPrimitive'
-import mobx from './mobx'
+import { getMobx } from './mobx'
 import type { MobxSetterOption, MobxSetterStandardOption } from './type'
 
-const { observable } = mobx.mobx
-
 export function assembleOption<Data, Option = any>(v: MobxSetterOption<Data, Option>): MobxSetterStandardOption<Data> {
+  const { observable } = getMobx()
   if (isPrimitive(v)) {
     return {
       value: v,

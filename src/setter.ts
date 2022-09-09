@@ -1,12 +1,9 @@
 import { assembleOption } from './assembleOption'
-import mobx from './mobx'
+import { getMobx } from './mobx'
 import type { MobxSetterOption, MobxSetterValue } from './type'
 
-const {
-  mobx: { action, makeObservable, observable, onBecomeUnobserved },
-} = mobx
-
 export function mobxSetter<Data, Option = any>(option: MobxSetterOption<Data, Option>): MobxSetterValue<Data> {
+  const { action, makeObservable, observable, onBecomeUnobserved } = getMobx()
   const { value, annotation, autoRestoreOnBecomeUnobserved } = assembleOption(option)
   const defaultValue = value as Data
   const target = {

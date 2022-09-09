@@ -1,15 +1,12 @@
 import { noop } from 'lodash'
 
-import mobx from './mobx'
+import { getMobx } from './mobx'
 import { sleep } from './sleep'
 
 import { mobxRequest, request } from '.'
 
-const {
-  mobx: { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved },
-} = mobx
-
 describe('requestProperty', () => {
+  const { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved } = getMobx()
   const mockFetch = jest.fn(
     (param?: {
       path: { id: number }

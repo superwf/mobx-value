@@ -1,12 +1,9 @@
-import mobx from './mobx'
+import { getMobx } from './mobx'
 
 import { boolean, mobxBoolean } from '.'
 
-const {
-  mobx: { autorun, observe },
-} = mobx
-
 describe('mobxBoolean', () => {
+  const { autorun, observe } = getMobx()
   const a = mobxBoolean()
   it('default false', () => {
     expect(a.value).toBe(false)

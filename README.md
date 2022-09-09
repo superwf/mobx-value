@@ -13,7 +13,7 @@ The most outstanding of `mobx-value` is, you do not have to create much structur
     - [Request](#request)
     - [Lazy](#lazy)
     - [Alias](#alias)
-    - [configureMobx](#configureMobx)
+    - [setMobx](#setMobx)
   - [Example](#example)
     - [Work with React](#work-with-react)
     - [Hooks](#hooks)
@@ -313,16 +313,18 @@ At early version, the export method is `mobxSetter`, `mobxBoolean`, `mobxRequest
 
 From v1.1, add short alias `setter`, `boolean`, `request` and `lazy`.
 
-### configureMobx
+### setMobx
 
-From v1.4, add `configureMobx` to set `mobx` instance for `mobx-value`.
+From v1.4.2, add `setMobx` to set `mobx` instance for `mobx-value`.
 
 When there are more than one mobx instances work togather. Use this can manually set which should be used by `mobx-value`.
 
 ```typescript
-import { configureMobx } from 'mobx-value'
+import * as otherVersionMobx from 'mobx-v60'
+import { setMobx } from 'mobx-value'
 
-configureMobx(yourMobxInstance)
+setMobx(otherVersionMobx)
+
 ```
 
 ## Example

@@ -2,17 +2,15 @@ import { act, render } from '@testing-library/react'
 import { observer } from 'mobx-react-lite'
 import type { FC } from 'react'
 
-import mobx from './mobx'
+import { getMobx } from './mobx'
 import { noop } from './noop'
 import { sleep } from './sleep'
 
 import { lazy, mobxLazy } from '.'
 
-const {
-  mobx: { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved },
-} = mobx
-
 describe('lazyProperty', () => {
+  const { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved } = getMobx()
+
   let mockRequest = jest.fn(() =>
     Promise.resolve({
       name: 'abc',
