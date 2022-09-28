@@ -7,10 +7,12 @@
     "type": "git",
     "url": "http://github.com/superwf/mobx-value"
   },
+  "source": "src/index.ts",
   "files": [
     "module",
     "dist",
     "lib",
+    "src",
     "type"
   ],
   "keywords": [
