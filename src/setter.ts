@@ -11,8 +11,12 @@ export function mobxSetter<Data, Option = any>(option: MobxSetterOption<Data, Op
     restore() {
       target.value = defaultValue
     },
-    set(v: Data) {
-      target.value = v
+    set(v: Data | ((prev: Data) => Data)) {
+      if (v instanceof Function) {
+        target.value = v(target.value)
+      } else {
+        target.value = v
+      }
     },
   }
   makeObservable(target, {

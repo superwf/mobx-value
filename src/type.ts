@@ -45,7 +45,7 @@ export type MobxSetterOption<Data, Option> = Option extends PrimitiveType
 
 export interface MobxSetterValue<Data> {
   value: Data
-  set: (v: Data) => void
+  set: (v: Data | ((prev: Data) => Data)) => void
   restore: () => void
 }
 

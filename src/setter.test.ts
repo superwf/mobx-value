@@ -31,6 +31,7 @@ describe('setter', () => {
     n.set(2)
     expect(n.value).toBe(2)
     expect(b.value).toBe(3)
+    n.restore()
   })
 
   it('object value, default decorator is observer', () => {
@@ -213,6 +214,19 @@ describe('setter', () => {
       const n8 = setter<symbol>(Symbol('a'))
       n8.set(Symbol('b'))
       expect('type refrelection ok').toBe('type refrelection ok')
+    })
+
+    it('call set with function type', () => {
+      expect(n.value).toBe(1)
+
+      n.set(prev => prev + 1)
+      expect(n.value).toBe(2)
+      n.set(prev => prev + 1)
+      expect(n.value).toBe(3)
+      n.set(prev => prev + 1)
+      expect(n.value).toBe(4)
+
+      n.restore()
     })
   })
 })

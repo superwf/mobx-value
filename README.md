@@ -58,6 +58,8 @@ const counter = setter({ value: 1 })
 counter.value // 1
 counter.set(2)
 counter.value // 2
+counter.set(n => n + 1) // support function from 1.5
+counter.value // 3
 counter.restore()
 counter.value // 1
 ```
@@ -89,7 +91,7 @@ interface MobxSetterOption<Data> {
 ```typescript
 interface MobxSetterValue<Data> {
   value: Data
-  set: (v: Data) => void
+  set: (v: Data | ((current: Data) => Data)) => void
   restore: () => void
 }
 ```
@@ -133,7 +135,7 @@ interface MobxBooleanOption {
 ```typescript
 interface MobxBooleanValue {
   value: boolean
-  set: (v: boolean) => void
+  set: (v: boolean | ((current: boolean) => boolean)) => void
   restore: () => void
   setTrue: () => void
   setFalse: () => void
@@ -206,7 +208,7 @@ interface MobxRequestOption<Data> {
 ```typescript
 interface MobxRequestValue<Data, Request extends (args?: any) => Promise<Data>> {
   value: Data
-  set: (v: Data) => void
+  set: (v: Data | ((current: Data) => Data)) => void
   restore: () => void
   request: (...args: Parameters<Request>) => CancellablePromise<Data>
   // cancel request only when loading status
@@ -277,7 +279,7 @@ interface MobxLazyOption<Data> {
 ```typescript
 interface MobxLazyValue<Data, Request extends RequestFunction> {
   value: Data
-  set: (v: Data) => void
+  set: (v: Data | ((current: Data) => Data)) => void
   restore: () => void
   request: (...args: Parameters<Request>) => CancellablePromise<Data>
   cancel: () => void
