@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/superwf/mobx-value/compare/v1.4.4...v1.5.0) (2022-11-02)
+
+
+### Features
+
+* support set by function ([18d9fdc](https://github.com/superwf/mobx-value/commit/18d9fdcfebb25143629b7c3c17c0fbf0e5e3369e))
+
 ### [1.4.4](https://github.com/superwf/mobx-value/compare/v1.4.3...v1.4.4) (2022-09-28)
 
 ### [1.4.3](https://github.com/superwf/mobx-value/compare/v1.4.2...v1.4.3) (2022-09-09)
