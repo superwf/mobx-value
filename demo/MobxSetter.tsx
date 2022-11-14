@@ -4,10 +4,16 @@ import type { FC } from 'react'
 
 import { setter } from '../src'
 
-const counter = setter(1)
+const counter = setter(1, {
+  name: 'demo counter',
+})
 
 const plusCounter = () => counter.set(counter.value + 1)
-const minusCounter = () => counter.set(counter.value - 1)
+// const minusCounter = () => counter.set(counter.value - 1)
+const minusCounter = () => {
+  // can see warn with "demo counter" in console
+  counter.value -= 1
+}
 
 export const MobxSetter: FC = observer(() => (
   <Card title="MobxSetter default useage" className="text-center">

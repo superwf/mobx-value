@@ -76,6 +76,7 @@ module.exports = {
     //   },
     // ],
     '@typescript-eslint/no-explicit-any': 0,
+    'no-param-reassign': 0,
   },
   overrides: [
     {

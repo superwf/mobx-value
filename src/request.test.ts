@@ -26,7 +26,7 @@ describe('requestProperty', () => {
   })
 
   it('test setter', () => {
-    const user = mobxRequest({ value: { name: '' }, request: mockFetch })
+    const user = mobxRequest({ value: { name: '' }, request: mockFetch, name: 'test case request user' })
     expect(user.value).toEqual({ name: '' })
     expect(user.loading).toBe(false)
   })

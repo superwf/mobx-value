@@ -58,7 +58,7 @@ const counter = setter({ value: 1 })
 counter.value // 1
 counter.set(2)
 counter.value // 2
-counter.set(n => n + 1) // support function from 1.5
+counter.set(n => n + 1) // support function from version 1.5
 counter.value // 3
 counter.restore()
 counter.value // 1
@@ -83,6 +83,11 @@ interface MobxSetterOption<Data> {
    * @default false
    * */
   autoRestoreOnBecomeUnobserved?: boolean
+
+  /**
+   * mobx debug name
+   * */
+   name?: string // support from version 1.6
 }
 ```
 
@@ -127,6 +132,11 @@ interface MobxBooleanOption {
    * @default false
    * */
   autoRestoreOnBecomeUnobserved?: boolean
+
+  /**
+   * mobx debug name
+   * */
+   name?: string
 }
 ```
 
@@ -200,6 +210,11 @@ interface MobxRequestOption<Data> {
    * @default false
    * */
   autoCancelOnBecomeUnobserved?: boolean
+
+  /**
+   * mobx debug name
+   * */
+   name?: string
 }
 ```
 
@@ -271,6 +286,11 @@ interface MobxLazyOption<Data> {
    * @default false
    * */
   autoCancelOnBecomeUnobserved?: boolean
+
+  /**
+   * mobx debug name
+   * */
+   name?: string
 }
 ```
 
@@ -408,7 +428,5 @@ render(<Example />, document.querySelector('#app'))
 ## TODO
 
 Something to be inproved in future.
-
-- [] add optional name parameter, to show debug information.
 
 - [] add delay time for loading debounce.

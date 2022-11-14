@@ -17,6 +17,11 @@ export type MobxSetterStandardOption<Data> = {
    * @default false
    * */
   autoRestoreOnBecomeUnobserved?: boolean
+
+  /**
+   * mobx debug name
+   * */
+  name?: string
 }
 
 export type OptionValueType<T> = T extends MobxSetterStandardOption<infer Data> ? Data : T

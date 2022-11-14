@@ -57,7 +57,7 @@ const packages: ConstructorParameters<typeof HtmlWebpackInjectExternalsPlugin>[0
   },
   {
     name: 'mobx',
-    path: '/dist/mobx.umd.production.min.js',
+    path: '/dist/mobx.umd.development.js',
   },
   {
     name: 'moment',
@@ -65,7 +65,7 @@ const packages: ConstructorParameters<typeof HtmlWebpackInjectExternalsPlugin>[0
   },
   {
     name: 'mobx-react-lite',
-    path: '/dist/mobxreactlite.umd.production.min.js',
+    path: '/dist/mobxreactlite.umd.development.js',
   },
   {
     name: 'antd',

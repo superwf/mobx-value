@@ -6,7 +6,7 @@ import { mobxSetter, setter } from '.'
 describe('setter', () => {
   const { autorun, isObservable, observable, onBecomeObserved, onBecomeUnobserved, runInAction } = getMobx()
 
-  const n = mobxSetter({ value: 1 })
+  const n = mobxSetter({ value: 1, name: 'test case n' })
 
   it('test setter', () => {
     expect(n.value).toBe(1)

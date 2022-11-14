@@ -1,3 +1,4 @@
+import type { CreateObservableOptions } from 'mobx'
 import type { CancellablePromise } from 'mobx/dist/api/flow'
 
 import { getMobx } from './mobx'
@@ -8,20 +9,21 @@ import type { MobxLazyOption, MobxLazyValue, RequestFunction } from './type'
 /**
  * generate a MobxLazyValue variable
  * */
-export function mobxLazy<Data, Request extends RequestFunction>({
-  request,
-  value: initValue,
-  annotation,
-  autoRestoreOnBecomeUnobserved,
-}: MobxLazyOption<Data, Request>): MobxLazyValue<Data, Request> {
+export function mobxLazy<Data, Request extends RequestFunction>(
+  { request, value: initValue, annotation, autoRestoreOnBecomeUnobserved }: MobxLazyOption<Data, Request>,
+  observableOption?: CreateObservableOptions,
+): MobxLazyValue<Data, Request> {
   const { onBecomeObserved } = getMobx()
 
-  const requestTarget = mobxRequest({
-    value: initValue,
-    annotation,
-    request,
-    autoRestoreOnBecomeUnobserved,
-  })
+  const requestTarget = mobxRequest(
+    {
+      value: initValue,
+      annotation,
+      request,
+      autoRestoreOnBecomeUnobserved,
+    },
+    observableOption,
+  )
   let resolve: (v: Data) => void
   let reject: (e: Error) => void
   const createNewPromise = () =>

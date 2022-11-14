@@ -52,7 +52,7 @@ describe('mobxBoolean', () => {
   })
 
   it('set auto restore when not observed', () => {
-    const b = mobxBoolean({ autoRestoreOnBecomeUnobserved: true })
+    const b = mobxBoolean({ autoRestoreOnBecomeUnobserved: true, name: 'test case boolean b' })
     expect(b.value).toBe(false)
     b.setTrue()
     expect(b.value).toBe(true)

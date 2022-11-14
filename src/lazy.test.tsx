@@ -17,7 +17,7 @@ describe('lazyProperty', () => {
     }),
   )
 
-  let user = lazy({ value: { name: '' }, request: mockRequest })
+  let user = lazy({ value: { name: '' }, request: mockRequest, name: 'lazy test case value user' })
 
   beforeEach(() => {
     mockRequest = jest.fn(() =>

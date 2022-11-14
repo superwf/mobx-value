@@ -1,3 +1,4 @@
+import type { CreateObservableOptions } from 'mobx'
 import type { CancellablePromise } from 'mobx/dist/api/flow'
 
 import { getMobx } from './mobx'
@@ -9,6 +10,7 @@ import type { MobxRequestOption, MobxRequestValue, RequestFunction } from './typ
  * */
 export function mobxRequest<Data, Request extends RequestFunction>(
   option: MobxRequestOption<Data, Request>,
+  observableOption?: CreateObservableOptions,
 ): MobxRequestValue<Data, Request> {
   const { flow, makeObservable, observable, onBecomeUnobserved } = getMobx()
 
@@ -21,11 +23,14 @@ export function mobxRequest<Data, Request extends RequestFunction>(
     parallel,
   } = option
   const valueInOption = 'value' in option
-  const setter = mobxSetter({
-    value: valueInOption ? defaultValue : undefined,
-    annotation,
-    autoRestoreOnBecomeUnobserved,
-  })
+  const setter = mobxSetter(
+    {
+      value: valueInOption ? defaultValue : undefined,
+      annotation,
+      autoRestoreOnBecomeUnobserved,
+    },
+    observableOption,
+  )
   type TParameters = Parameters<Request>
   type TData = Data | undefined
 
