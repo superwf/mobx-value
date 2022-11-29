@@ -233,6 +233,8 @@ interface MobxRequestValue<Data, Request extends (args?: any) => Promise<Data>> 
     * request again with last parameters
     */
   refresh: () => CancellablePromise<Data>
+  /** get last call args */
+  getLastArgs: () => any[]
 }
 ```
 

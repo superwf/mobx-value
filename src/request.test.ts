@@ -157,6 +157,17 @@ describe('requestProperty', () => {
     expect(mock).toHaveBeenCalledTimes(1)
   })
 
+  it('last request args', async () => {
+    const mock = jest.fn((..._: any[]) => Promise.resolve('abc'))
+    const req = mobxRequest({ value: '', request: mock })
+    await req.request()
+    expect(req.getLastArgs()).toEqual([])
+    await req.request('a')
+    expect(req.getLastArgs()).toEqual(['a'])
+    await req.request('a', 'b')
+    expect(req.getLastArgs()).toEqual(['a', 'b'])
+  })
+
   it('with parallel', async () => {
     const mock = jest.fn(() => Promise.resolve('abc'))
     const name = mobxRequest({ value: '', request: mock, parallel: true })

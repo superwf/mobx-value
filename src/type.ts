@@ -96,6 +96,8 @@ export interface MobxRequestValue<Data, Request extends RequestFunction> extends
   refresh: () => CancellablePromise<Data>
   cancel(): void
   loading: boolean
+  /** get last call args */
+  getLastArgs(): any[]
 }
 
 export type MobxLazyOption<D, R extends RequestFunction> = MobxRequestOption<D, R>

@@ -61,6 +61,9 @@ export function mobxRequest<Data, Request extends RequestFunction>(
         lastRequest.cancel()
       }
     },
+    getLastArgs() {
+      return lastParameters
+    },
   })
   const rawRequest = target.request
 
