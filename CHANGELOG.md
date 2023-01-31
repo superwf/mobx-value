@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/superwf/mobx-value/compare/v1.5.0...v1.6.0) (2023-01-31)
+
+
+### Features
+
+* add debug name option ([032dff5](https://github.com/superwf/mobx-value/commit/032dff55796dd69be5ab685ef934dc6ff1bbea84))
+* add request getAruments method ([d1e6fec](https://github.com/superwf/mobx-value/commit/d1e6fec0e89c4957ea2ce6c3ab4b9da0caad2f77))
+* request add getLastArgs method ([e3f3c60](https://github.com/superwf/mobx-value/commit/e3f3c609a4e159e5a0297581f066ad915132a613))
+
 ## [1.5.0](https://github.com/superwf/mobx-value/compare/v1.4.4...v1.5.0) (2022-11-02)
 
 
