@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.1](https://github.com/superwf/mobx-value/compare/v1.6.0...v1.6.1) (2023-01-31)
+
+
+### Bug Fixes
+
+* request restore ([97ef8ce](https://github.com/superwf/mobx-value/commit/97ef8ce51e5a650a6efd4d311396870cda59d42e))
+
 ## [1.6.0](https://github.com/superwf/mobx-value/compare/v1.5.0...v1.6.0) (2023-01-31)
 
 
