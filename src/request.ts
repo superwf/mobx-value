@@ -61,7 +61,7 @@ export function mobxRequest<Data, Request extends RequestFunction>(
         lastRequest.cancel()
       }
     },
-    getLastArgs() {
+    getArguments() {
       return lastParameters
     },
   })

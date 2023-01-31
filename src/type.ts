@@ -97,7 +97,7 @@ export interface MobxRequestValue<Data, Request extends RequestFunction> extends
   cancel(): void
   loading: boolean
   /** get last call args */
-  getLastArgs(): any[]
+  getArguments(): any[]
 }
 
 export type MobxLazyOption<D, R extends RequestFunction> = MobxRequestOption<D, R>

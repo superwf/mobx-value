@@ -161,11 +161,11 @@ describe('requestProperty', () => {
     const mock = jest.fn((..._: any[]) => Promise.resolve('abc'))
     const req = mobxRequest({ value: '', request: mock })
     await req.request()
-    expect(req.getLastArgs()).toEqual([])
+    expect(req.getArguments()).toEqual([])
     await req.request('a')
-    expect(req.getLastArgs()).toEqual(['a'])
+    expect(req.getArguments()).toEqual(['a'])
     await req.request('a', 'b')
-    expect(req.getLastArgs()).toEqual(['a', 'b'])
+    expect(req.getArguments()).toEqual(['a', 'b'])
   })
 
   it('with parallel', async () => {
