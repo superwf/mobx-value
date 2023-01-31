@@ -35,11 +35,13 @@ export function mobxSetter<Data, Option = any>(
     target,
     {
       value: annotation || observable,
-      restore: action,
       set: action,
     },
     observableOption,
   )
+  target.restore = action(() => {
+    target.value = defaultValue
+  })
   if (autoRestoreOnBecomeUnobserved) {
     onBecomeUnobserved(target, 'value', target.restore)
   }

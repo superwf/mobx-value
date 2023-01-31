@@ -112,6 +112,8 @@ describe('requestProperty', () => {
       expect(user.error).toBe(e)
       expect(err.message).toBe(e.message)
     })
+    user.restore()
+    expect(user.error).toBe(null)
   })
 
   it('cancel current request', done => {
@@ -166,6 +168,8 @@ describe('requestProperty', () => {
     expect(req.getArguments()).toEqual(['a'])
     await req.request('a', 'b')
     expect(req.getArguments()).toEqual(['a', 'b'])
+    req.restore()
+    expect(req.getArguments()).toEqual([])
   })
 
   it('with parallel', async () => {

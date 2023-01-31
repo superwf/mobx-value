@@ -184,14 +184,14 @@ describe('setter', () => {
       expect(m.value).toBe('')
       const spy = jest.fn()
       const dispose = autorun(() => {
-        if (m.value.length > 0) {
-          spy()
-        }
+        spy(m.value)
       })
+      expect(spy).toHaveBeenCalledTimes(1)
       m.set('a')
-      expect(spy).toHaveBeenCalled()
+      expect(spy).toHaveBeenCalledTimes(2)
       expect(m.value).toBe('a')
       m.restore()
+      expect(spy).toHaveBeenCalledTimes(3)
       expect(m.value).toBe('')
       dispose()
     })

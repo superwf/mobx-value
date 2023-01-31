@@ -66,6 +66,13 @@ export function mobxRequest<Data, Request extends RequestFunction>(
     },
   })
   const rawRequest = target.request
+  const rawRestore = target.restore
+
+  target.restore = () => {
+    lastParameters = []
+    target.error = null
+    rawRestore()
+  }
 
   target.request = (...args: TParameters) => {
     lastParameters = args
@@ -80,7 +87,7 @@ export function mobxRequest<Data, Request extends RequestFunction>(
     return lastRequest
   }
   makeObservable(target, {
-    error: observable,
+    // error: observable.ref,
     loading: observable,
   })
   if (valueInOption && autoCancelOnBecomeUnobserved) {
