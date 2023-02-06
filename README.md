@@ -1,5 +1,7 @@
 # Mobx Value
 
+<img width="50" src="https://raw.githubusercontent.com/superwf/mobx-value/master/mobx-value-logo.svg" />
+
 `mobx-value` is a simple and small data management lib, with it data decouple from component.
 
 The most outstanding of `mobx-value` is, you do not have to create much structure layer code, as `reducer` or `action` or `dispatch`.
