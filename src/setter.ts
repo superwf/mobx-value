@@ -23,6 +23,18 @@ export function mobxSetter<Data, Option = any>(
         target.value = v
       }
     },
+    merge(v) {
+      if (!target.value) {
+        target.value = v as any
+        return
+      }
+      if (typeof target.value === 'object' && typeof v === 'object' && v !== null) {
+        target.value = {
+          ...target.value,
+          ...v,
+        }
+      }
+    },
   }
   if (name) {
     if (!observableOption) {
@@ -36,6 +48,7 @@ export function mobxSetter<Data, Option = any>(
     {
       value: annotation || observable,
       set: action,
+      merge: action,
     },
     observableOption,
   )

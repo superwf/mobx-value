@@ -64,6 +64,12 @@ counter.set(n => n + 1) // support function from version 1.5
 counter.value // 3
 counter.restore()
 counter.value // 1
+
+const o = setter({
+  value: {n: 1},
+})
+o.assign({ m: 2 }) // add `assign` method from version 1.7
+o.value // { n: 1, m: 2 }
 ```
 
 - Parameters type `MobxSetterOption`
@@ -100,6 +106,8 @@ interface MobxSetterValue<Data> {
   value: Data
   set: (v: Data | ((current: Data) => Data)) => void
   restore: () => void
+  /** only works when value is an object, shallow merge properties */
+  assign: (v: Record<string, any>) => void
 }
 ```
 

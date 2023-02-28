@@ -228,5 +228,33 @@ describe('setter', () => {
 
       n.restore()
     })
+
+    it('merge', () => {
+      const o = setter({
+        value: {},
+        annotation: observable.ref,
+      })
+      o.merge({
+        n: 1,
+      })
+      expect(o.value).toEqual({ n: 1 })
+
+      o.merge({
+        m: 2,
+      })
+      expect(o.value).toEqual({ n: 1, m: 2 })
+
+      o.merge({
+        n: 3,
+        m: 4,
+      })
+      expect(o.value).toEqual({ n: 3, m: 4 })
+
+      o.merge({ m: 'm' })
+      expect(o.value).toEqual({ n: 3, m: 'm' })
+
+      o.restore()
+      expect(o.value).toEqual({})
+    })
   })
 })
