@@ -40,11 +40,14 @@
     "prepare": "husky install",
     "publish-rc": "yarn test && yarn build && yarn standard-version -- prerelease rc && npm publish --ignore-scripts"
   },
+  "sideeffects": false,
   "main": "lib/index.js",
   "types": "type/index.d.ts",
   "typings": "type/index.d.ts",
   "module": "module/index.js",
   "unpkg": "dist/index.js",
+  "umd:main": "dist/index.js",
+  "jsdelivr": "dist/index.js",
   "devDependencies": {
     "@babel/core": "^7.17.2",
     "@babel/preset-typescript": "^7.16.7",
