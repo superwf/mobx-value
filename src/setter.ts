@@ -9,7 +9,7 @@ export function mobxSetter<Data, Option = any>(
   observableOption?: CreateObservableOptions,
 ): MobxSetterValue<Data> {
   const { action, makeObservable, observable, onBecomeUnobserved } = getMobx()
-  const { value, annotation, autoRestoreOnBecomeUnobserved, name } = assembleOption(option)
+  const { value, annotation, autoRestoreOnBecomeUnobserved, autoRestore, name } = assembleOption(option)
   const defaultValue = value as Data
   const target: MobxSetterValue<Data> = {
     value: value as Data,
@@ -55,7 +55,7 @@ export function mobxSetter<Data, Option = any>(
   target.restore = action(() => {
     target.value = defaultValue
   })
-  if (autoRestoreOnBecomeUnobserved) {
+  if (autoRestoreOnBecomeUnobserved || autoRestore) {
     onBecomeUnobserved(target, 'value', target.restore)
   }
   return target

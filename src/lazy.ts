@@ -10,7 +10,7 @@ import type { MobxLazyOption, MobxLazyValue, RequestFunction } from './type'
  * generate a MobxLazyValue variable
  * */
 export function mobxLazy<Data, Request extends RequestFunction>(
-  { request, value: initValue, annotation, autoRestoreOnBecomeUnobserved }: MobxLazyOption<Data, Request>,
+  { request, value: initValue, annotation, autoRestoreOnBecomeUnobserved, autoRestore }: MobxLazyOption<Data, Request>,
   observableOption?: CreateObservableOptions,
 ): MobxLazyValue<Data, Request> {
   const { onBecomeObserved } = getMobx()
@@ -21,6 +21,7 @@ export function mobxLazy<Data, Request extends RequestFunction>(
       annotation,
       request,
       autoRestoreOnBecomeUnobserved,
+      autoRestore,
     },
     observableOption,
   )

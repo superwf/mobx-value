@@ -203,6 +203,29 @@ describe('requestProperty', () => {
     stop2()
   })
 
+  it('alias autoRestore', async () => {
+    const mock = jest.fn(() => Promise.resolve('a'))
+    const name = mobxRequest({ value: '', request: mock, parallel: true, autoRestore: true })
+    const mockOnObserved = jest.fn()
+    const mockOnUnobserved = jest.fn()
+    const stop1 = onBecomeObserved(name, 'value', mockOnObserved)
+    expect(mockOnObserved).not.toHaveBeenCalled()
+    expect(name.value).toBe('')
+    await name.request()
+    const dispose1 = autorun(() => {
+      expect(name.value).toBe('a')
+    })
+    expect(mockOnObserved).toHaveBeenCalledTimes(1)
+    const stop2 = onBecomeUnobserved(name, 'value', mockOnUnobserved)
+    expect(mockOnUnobserved).not.toHaveBeenCalled()
+    dispose1()
+    expect(name.value).toBe('')
+    expect(mockOnUnobserved).toHaveBeenCalledTimes(1)
+
+    stop1()
+    stop2()
+  })
+
   it('set auto cancel when not observed', async () => {
     const mock = jest.fn(
       () =>
@@ -249,6 +272,7 @@ describe('requestProperty', () => {
 
   it('merge', () => {
     const o = request({
+      request: () => Promise.resolve({}),
       value: {},
       annotation: observable.ref,
     })

@@ -15,7 +15,7 @@ The most outstanding of `mobx-value` is, you do not have to create much structur
     - [Request](#request)
     - [Lazy](#lazy)
     - [Alias](#alias)
-    - [setMobx](#setMobx)
+    - [SetMobx](#setmobx)
   - [Example](#example)
     - [Work with React](#work-with-react)
     - [Hooks](#hooks)
@@ -93,6 +93,13 @@ interface MobxSetterOption<Data> {
   autoRestoreOnBecomeUnobserved?: boolean
 
   /**
+   * alias of `autoRestoreOnBecomeUnobserved`
+   * @default false
+   * added version 1.7.1
+   * */
+  autoRestore?: boolean
+
+  /**
    * mobx debug name
    * */
    name?: string // support from version 1.6
@@ -142,6 +149,13 @@ interface MobxBooleanOption {
    * @default false
    * */
   autoRestoreOnBecomeUnobserved?: boolean
+
+  /**
+   * alias of `autoRestoreOnBecomeUnobserved`
+   * @default false
+   * added version 1.7.1
+   * */
+  autoRestore?: boolean
 
   /**
    * mobx debug name
@@ -214,6 +228,13 @@ interface MobxRequestOption<Data> {
    * @default false
    * */
   autoRestoreOnBecomeUnobserved?: boolean
+
+  /**
+   * alias of `autoRestoreOnBecomeUnobserved`
+   * @default false
+   * added version 1.7.1
+   * */
+  autoRestore?: boolean
 
   /**
    * auto cancle request when not observed and loading is not complete
@@ -292,6 +313,13 @@ interface MobxLazyOption<Data> {
    * @default false
    * */
   autoRestoreOnBecomeUnobserved?: boolean
+
+  /**
+   * alias of `autoRestoreOnBecomeUnobserved`
+   * @default false
+   * added version 1.7.1
+   * */
+  autoRestore?: boolean
 
   /**
    * auto cancle request when not observed and loading is not complete
@@ -426,6 +454,7 @@ export const Example: FC = () => {
 }
 
 render(<Example />, document.querySelector('#app'))
+```
 
 ## CDN
 

@@ -157,6 +157,31 @@ describe('setter', () => {
     stop2()
   })
 
+  it('alias autoRestore', () => {
+    const a = mobxSetter({ value: 1, autoRestore: true })
+    const mockOnObserved = jest.fn()
+    const mockOnUnobserved = jest.fn()
+    const stop1 = onBecomeObserved(a, 'value', mockOnObserved)
+    expect(mockOnObserved).not.toHaveBeenCalled()
+    const dispose1 = autorun(() => {
+      expect(a.value).toBe(1)
+      a.set(2)
+    })
+    const dispose2 = autorun(() => {
+      expect(a.value).toBe(2)
+    })
+    expect(mockOnObserved).toHaveBeenCalledTimes(1)
+    const stop2 = onBecomeUnobserved(a, 'value', mockOnUnobserved)
+    expect(mockOnUnobserved).not.toHaveBeenCalled()
+    dispose1()
+    dispose2()
+    expect(a.value).toBe(1)
+    expect(mockOnUnobserved).toHaveBeenCalledTimes(1)
+
+    stop1()
+    stop2()
+  })
+
   it('short alias', () => {
     expect(setter).toBe(mobxSetter)
   })

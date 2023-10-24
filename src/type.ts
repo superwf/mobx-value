@@ -19,6 +19,13 @@ export type MobxSetterStandardOption<Data> = {
   autoRestoreOnBecomeUnobserved?: boolean
 
   /**
+   * alias of `autoRestoreOnBecomeUnobserved`
+   * @default false
+   * added version 1.7.1
+   * */
+  autoRestore?: boolean
+
+  /**
    * mobx debug name
    * */
   name?: string

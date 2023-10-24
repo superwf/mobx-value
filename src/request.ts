@@ -19,6 +19,7 @@ export function mobxRequest<Data, Request extends RequestFunction>(
     request: requestFunction,
     annotation,
     autoRestoreOnBecomeUnobserved = false,
+    autoRestore,
     autoCancelOnBecomeUnobserved = false,
     parallel,
   } = option
@@ -28,6 +29,7 @@ export function mobxRequest<Data, Request extends RequestFunction>(
       value: valueInOption ? defaultValue : undefined,
       annotation,
       autoRestoreOnBecomeUnobserved,
+      autoRestore,
     },
     observableOption,
   )

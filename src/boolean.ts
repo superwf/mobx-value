@@ -13,7 +13,7 @@ export function mobxBoolean(option?: MobxBooleanOption, observableOption?: Creat
   let autoRestoreOnBecomeUnobserved = false
   if (typeof option === 'object') {
     value = Boolean(option.value)
-    autoRestoreOnBecomeUnobserved = Boolean(option.autoRestoreOnBecomeUnobserved)
+    autoRestoreOnBecomeUnobserved = Boolean(option.autoRestoreOnBecomeUnobserved) || Boolean(option.autoRestore)
   } else {
     value = Boolean(option)
     autoRestoreOnBecomeUnobserved = false

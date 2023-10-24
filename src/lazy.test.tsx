@@ -240,8 +240,62 @@ describe('lazyProperty', () => {
       user1.reset()
     })
 
+    it('mount component use alias autoRestore', async () => {
+      const user1 = lazy({ value: { name: '' }, request: mockRequest, autoRestore: true })
+
+      const Comp: FC = observer(() => {
+        if (user1.value.name) {
+          return <b id="content">has a name</b>
+        }
+        return <b id="content">no name</b>
+      })
+      const app = render(<Comp />)
+      await act(async () => {
+        await user1.ready
+      })
+      const node = await app.findByText('has a name')
+      expect(node.textContent).toBe('has a name')
+      expect(user1.value.name).toBe('abc')
+      app.unmount()
+      expect(user1.value.name).toBe('')
+      user1.reset()
+    })
+
     it('set auto restore when not observed', async () => {
       const user1 = lazy({ value: { name: '' }, request: mockRequest, autoRestoreOnBecomeUnobserved: true })
+
+      const Comp: FC = observer(() => {
+        if (user1.value.name) {
+          return <b id="content">has a name</b>
+        }
+        return <b id="content">no name</b>
+      })
+      const mockOnObserved = jest.fn()
+      const mockOnUnobserved = jest.fn()
+      const stop1 = onBecomeObserved(user1, 'value', mockOnObserved)
+      const stop2 = onBecomeUnobserved(user1, 'value', mockOnUnobserved)
+
+      expect(mockOnObserved).not.toHaveBeenCalled()
+      expect(mockOnUnobserved).not.toHaveBeenCalled()
+
+      const app = render(<Comp />)
+      expect(user1.value.name).toBe('')
+      await app.findByText('no name')
+      // await user1.ready
+      expect(mockOnObserved).toHaveBeenCalledTimes(1)
+      expect(mockOnUnobserved).not.toHaveBeenCalled()
+      expect(user1.value.name).toBe('abc')
+
+      app.unmount()
+      expect(mockOnUnobserved).toHaveBeenCalledTimes(1)
+      expect(user1.value.name).toBe('')
+
+      stop1()
+      stop2()
+    })
+
+    it('set auto restore when not observed, use alias autoRestore', async () => {
+      const user1 = lazy({ value: { name: '' }, request: mockRequest, autoRestore: true })
 
       const Comp: FC = observer(() => {
         if (user1.value.name) {
