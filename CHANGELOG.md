@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/superwf/mobx-value/compare/v1.7.0...v1.8.0) (2023-10-24)
+
+
+### Features
+
+* add option alias ([c32baee](https://github.com/superwf/mobx-value/commit/c32baee8779517e972f1030668c2822bdeaa0396))
+
+
+### Bug Fixes
+
+* add package description ([182685e](https://github.com/superwf/mobx-value/commit/182685ec234384c3fcb1191e1dae3deed78a100a))
+
 ## [1.7.0](https://github.com/superwf/mobx-value/compare/v1.6.1...v1.7.0) (2023-02-28)
 
 
