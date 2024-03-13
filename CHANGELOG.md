@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/superwf/mobx-value/compare/v1.8.1...v1.9.0) (2024-03-13)
+
+
+### Features
+
+* add request option autoCancelLastOnRequest ([f7f6e40](https://github.com/superwf/mobx-value/commit/f7f6e409da397ec3a08e136c2f3b9212cd1b3ab7))
+
 ### [1.8.1](https://github.com/superwf/mobx-value/compare/v1.8.0...v1.8.1) (2023-10-24)
 
 ## [1.8.0](https://github.com/superwf/mobx-value/compare/v1.7.0...v1.8.0) (2023-10-24)
