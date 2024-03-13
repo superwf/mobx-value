@@ -87,6 +87,7 @@ export interface MobxRequestOption<Data, Request extends RequestFunction>
   /**
    * default mobxRequest prevent next request when last request is loading
    * set to true to allow next request when loading
+   * NOTICE: when parallel is true, the result value may NOT be the last request response
    * @default false
    * */
   parallel?: boolean
@@ -96,6 +97,13 @@ export interface MobxRequestOption<Data, Request extends RequestFunction>
    * @default false
    * */
   autoCancelOnBecomeUnobserved?: boolean
+
+  /**
+   * auto cancle request when the last request is not complete
+   * you should NOT use it together with `parallel`
+   * @default false
+   * */
+  autoCancelLastOnRequest?: boolean
 }
 
 export interface MobxRequestValue<Data, Request extends RequestFunction> extends MobxSetterValue<Data> {

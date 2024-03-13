@@ -295,4 +295,28 @@ describe('requestProperty', () => {
     o.merge({ m: 'm' })
     expect(o.value).toEqual({ n: 3, m: 'm' })
   })
+
+  it('test autoCancelPrevOnRequest', async () => {
+    let i = 0
+    const mock = jest.fn(
+      () =>
+        new Promise(resolve => {
+          i += 1
+          const time = Math.random()
+          console.log(time)
+          setTimeout(() => resolve(i), time)
+        }),
+    )
+    const req = mobxRequest({ value: '', request: mock, autoCancelLastOnRequest: true })
+
+    await Promise.all([
+      req.request().catch(noop),
+      req.request().catch(noop),
+      req.request().catch(noop),
+      req.request().catch(noop),
+      req.request().catch(noop),
+    ])
+
+    expect(req.value).toBe(5)
+  })
 })

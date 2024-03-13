@@ -12,7 +12,7 @@ export function mobxRequest<Data, Request extends RequestFunction>(
   option: MobxRequestOption<Data, Request>,
   observableOption?: CreateObservableOptions,
 ): MobxRequestValue<Data, Request> {
-  const { flow, makeObservable, observable, onBecomeUnobserved } = getMobx()
+  const { flow, makeObservable, observable, onBecomeUnobserved, action } = getMobx()
 
   const {
     value: defaultValue,
@@ -22,6 +22,7 @@ export function mobxRequest<Data, Request extends RequestFunction>(
     autoRestore,
     autoCancelOnBecomeUnobserved = false,
     parallel,
+    autoCancelLastOnRequest,
   } = option
   const valueInOption = 'value' in option
   const setter = mobxSetter(
@@ -60,6 +61,7 @@ export function mobxRequest<Data, Request extends RequestFunction>(
     refresh: () => target.request(...lastParameters),
     cancel: () => {
       if (target.loading && lastRequest) {
+        target.loading = false
         lastRequest.cancel()
       }
     },
@@ -82,6 +84,11 @@ export function mobxRequest<Data, Request extends RequestFunction>(
       lastRequest = rawRequest(...args)
       return lastRequest
     }
+    if (autoCancelLastOnRequest && target.loading) {
+      lastRequest.cancel()
+      lastRequest = rawRequest(...args)
+      return lastRequest
+    }
     if (target.loading && !parallel) {
       return lastRequest
     }
@@ -91,6 +98,7 @@ export function mobxRequest<Data, Request extends RequestFunction>(
   makeObservable(target, {
     // error: observable.ref,
     loading: observable,
+    cancel: action,
   })
   if (valueInOption && autoCancelOnBecomeUnobserved) {
     onBecomeUnobserved(target, 'value', target.cancel)
