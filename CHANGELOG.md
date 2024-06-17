@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/superwf/mobx-value/compare/v1.9.0...v1.10.0) (2024-06-17)
+
+
+### Features
+
+* merge accept function type ([d31b750](https://github.com/superwf/mobx-value/commit/d31b750204dcef39266ac3ed8ce4216c32f15f76))
+
 ## [1.9.0](https://github.com/superwf/mobx-value/compare/v1.8.1...v1.9.0) (2024-03-13)
 
 
