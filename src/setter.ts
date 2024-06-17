@@ -24,6 +24,13 @@ export function mobxSetter<Data, Option = any>(
       }
     },
     merge(v) {
+      if (typeof v === 'function') {
+        target.value = {
+          ...target.value,
+          ...v(target.value),
+        }
+        return 
+      }
       if (!target.value) {
         target.value = v as any
         return

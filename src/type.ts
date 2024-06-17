@@ -60,7 +60,7 @@ export interface MobxSetterValue<Data> {
   set: (v: Data | ((prev: Data) => Data)) => void
   restore: () => void
   /** only works when value is an object, shallow merge properties */
-  merge: (v: Record<string, any>) => void
+  merge: (v: Data extends object ? Partial<Data> | ((prev: Data) => Partial<Data>) : never) => void
 }
 
 export type StripValue<T> = T extends MobxSetterStandardOption<infer P>

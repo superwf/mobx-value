@@ -256,7 +256,7 @@ describe('setter', () => {
 
     it('merge', () => {
       const o = setter({
-        value: {},
+        value: {} as { m: number; n: number },
         annotation: observable.ref,
       })
       o.merge({
@@ -275,8 +275,32 @@ describe('setter', () => {
       })
       expect(o.value).toEqual({ n: 3, m: 4 })
 
-      o.merge({ m: 'm' })
-      expect(o.value).toEqual({ n: 3, m: 'm' })
+      o.merge({ m: 5 })
+      expect(o.value).toEqual({ n: 3, m: 5 })
+
+      o.restore()
+      expect(o.value).toEqual({})
+    })
+
+    it('merge function type', () => {
+      const o = setter({
+        value: {} as { m: number; n: number },
+        annotation: observable.ref,
+      })
+      o.merge(() => ({ n: 1 }))
+      expect(o.value).toEqual({ n: 1 })
+
+      o.merge(prev => ({
+        ...prev,
+        m: 2,
+      }))
+      expect(o.value).toEqual({ n: 1, m: 2 })
+
+      o.merge(prev => ({
+        n: prev.m,
+        m: prev.n,
+      }))
+      expect(o.value).toEqual({ n: 2, m: 1 })
 
       o.restore()
       expect(o.value).toEqual({})

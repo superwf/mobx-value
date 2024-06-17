@@ -68,7 +68,7 @@ counter.value // 1
 const o = setter({
   value: {n: 1},
 })
-o.assign({ m: 2 }) // add `assign` method from version 1.7
+o.merge({ m: 2 }) // add `merge` method from version 1.7
 o.value // { n: 1, m: 2 }
 ```
 
@@ -114,7 +114,7 @@ interface MobxSetterValue<Data> {
   set: (v: Data | ((current: Data) => Data)) => void
   restore: () => void
   /** only works when value is an object, shallow merge properties */
-  assign: (v: Record<string, any>) => void
+  merge: (v: Record<string, any>) => void
 }
 ```
 
